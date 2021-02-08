@@ -33,9 +33,10 @@ window.addEventListener("load", () => {
         sounds.push({
           name: itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0],
           soundURL: url,
-          fullPath: itemRef.fullPath
+          fullPath: itemRef.fullPath,
+          id: itemRef.fullPath.split('sound')[1].split('_')[0]
         });
-        // console.log(sounds[1].name)
+        // console.log(sounds[0].id)
         // console.log(itemRef.fullPath);
         // console.log(sounds[0].fullPath)
         // introURL += url;
@@ -54,25 +55,26 @@ window.addEventListener("load", () => {
   
 
   loadSounds.addEventListener('click', () => {
+    // let sortetSounds = sortSounds(sounds);
     representSounds(sounds);
     console.log(sounds.length)
-    // const sortArr = [];
+//     const sortArr = [];
 // console.log(sounds[0].fullPath.split('sound')[1].split('_')[0])
-    // for (let i = 0; i != sounds.length; i++) {
-    //   let soundNumber = sounds[0].fullPath.split('sound')[1].split('_')[0]
-    //   if (soundNumber != i) {
-    //     sortArr[soundNumber] = sounds[i].name + ' ' + sounds[i].soundURL;
-    //     console.log(sortArr);
-    //   } else {
-    //     sortArr[i] = sounds[i].name + ' ' + sounds[i].soundURL;
-    //   }
-    // }
+//     for (let i = 0; i != sounds.length; i++) {
+//       let soundNumber = sounds[0].fullPath.split('sound')[1].split('_')[0]
+//       if (soundNumber != i) {
+//         sortArr[soundNumber] = sounds[i].name + ' ' + sounds[i].soundURL;
+//         console.log(sortArr);
+//       } else {
+//         sortArr[i] = sounds[i].name + ' ' + sounds[i].soundURL;
+//       }
+//     }
     // console.log(sortArr)
-    const allButtons = document.querySelectorAll('.SoundsToPlay');
-    for (let i = 0; i <= allButtons.length; i++) {
+    // const allButtons = document.querySelectorAll('.SoundsToPlay');
+    // for (let i = 0; i <= allButtons.length; i++) {
       
-    }
-    console.log(allButtons);
+    // }
+    // console.log(allButtons);
   })
 
   
@@ -141,12 +143,23 @@ window.addEventListener("load", () => {
 function representSounds(sounds) {
   const sortSounds = [];
   const representSounds = document.getElementById('representSounds');
-// console.log(sounds[1].name)
+  // console.table(sounds.id);
   representSounds.textContent = "";
   for (const index in sounds) {
     sortSounds.push(sounds[index]);
   }
-  console.table(sortSounds);
+
+  function GetSortOrder(sortetArr) {    
+    return function(a, b) {    
+        if (a[sortetArr] > b[sortetArr]) {    
+            return 1;    
+        } else if (a[sortetArr] < b[sortetArr]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
+}
+  sortSounds.sort(GetSortOrder('id'));
 
   if (sortSounds.length === 0) {
     representSounds.textContent = 'Keine Sounds verfügbar';
@@ -169,6 +182,21 @@ function representSounds(sounds) {
     }
   }
 }
+
+
+// function sortSounds(sounds) {
+//   console.table(sounds)
+//   for (let i = 0; i < sounds.length; i++) {
+//     if (sounds[i].id > sounds[i + 1].id) {
+//       let a = sounds[i]
+//       let b = sounds[i + 1]
+//       sounds[i] = b
+//       sounds[i + 1] = a
+//     }
+//   }
+//   return sounds;
+// }
+
 
 // function playSound(sound) {
 //   const audioSound = new Audio(sound.soundURL);
