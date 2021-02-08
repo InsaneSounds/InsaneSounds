@@ -20,31 +20,63 @@ window.addEventListener("load", () => {
   const storage = firebase.storage();
   const storageRef = storage.ref().child('basicSounds');
 
-  const musicRef = storageRef.child('basicSounds');
-  const spaceRef = storageRef.child('basicSounds/sound1.mp3')
+  // const musicRef = storageRef.child('basicSounds');
+  // const spaceRef = storageRef.child('basicSounds/sound1.mp3')
 
-  let sounds = [];
+  const sounds = [];
 
-  console.log(storageRef.listAll())
+  // console.log(storageRef.listAll())
   storageRef.listAll().then(res => {
     res.items.forEach(itemRef => {
       storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
         // document.getElementById(`image${getIdOfPath(itemRef.fullPath)}`).src = url;
         sounds.push({
-          name: "hallo",
-          soundURL: url
+          name: itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0],
+          soundURL: url,
+          fullPath: itemRef.fullPath
         });
-        console.log(url)
-        
+        // console.log(sounds[1].name)
+        // console.log(itemRef.fullPath);
+        // console.log(sounds[0].fullPath)
         // introURL += url;
         // console.log(url);
+        // console.log(sounds[0].name)
+        
       }).catch(err => {
-          console.error(err.message);
+          // console.error(err.message);
       });
     });
   })
   
+  // console.log(sounds.fullPath)
+  // const obj = JSON.parse(sounds);
+  // const arrLength = sounds[0].length;
+  
 
+  loadSounds.addEventListener('click', () => {
+    representSounds(sounds);
+    console.log(sounds.length)
+    // const sortArr = [];
+// console.log(sounds[0].fullPath.split('sound')[1].split('_')[0])
+    // for (let i = 0; i != sounds.length; i++) {
+    //   let soundNumber = sounds[0].fullPath.split('sound')[1].split('_')[0]
+    //   if (soundNumber != i) {
+    //     sortArr[soundNumber] = sounds[i].name + ' ' + sounds[i].soundURL;
+    //     console.log(sortArr);
+    //   } else {
+    //     sortArr[i] = sounds[i].name + ' ' + sounds[i].soundURL;
+    //   }
+    // }
+    // console.log(sortArr)
+    const allButtons = document.querySelectorAll('.SoundsToPlay');
+    for (let i = 0; i <= allButtons.length; i++) {
+      
+    }
+    console.log(allButtons);
+  })
+
+  
+// console.log(sounds[0].name);
   // console.log(sounds.name),
   // console.log(soundURL)
   // console.log(spaceRef.toURL())
@@ -67,19 +99,21 @@ window.addEventListener("load", () => {
   // const djMiko = new Audio("https://firebasestorage.googleapis.com/v0/b/insanesounds-a6a16.appspot.com/o/basicSounds%2FDJMiko.mp3?alt=media&token=8c8994fc-981e-4785-a3d1-ff804058d035");
   // const djChrisinator = new Audio("https://firebasestorage.googleapis.com/v0/b/insanesounds-a6a16.appspot.com/o/basicSounds%2FDJChrisinator.mp3?alt=media&token=d0a00006-1a23-403f-b5ef-eea70c234a6d");
 
-  intro.addEventListener("click", () => {
-    const Soundintro = new Audio(sounds[0].soundURL);
-    Soundintro.play();
-  });
+  // intro.addEventListener("click", () => {
+  //   const Soundintro = new Audio(sounds[0].soundURL);
+  //   console.log(sounds[0].name)
+  //   Soundintro.play();
+  // });
 
-  miko.addEventListener("click", () => {
-    const djMiko = new Audio(sounds[1].soundURL)
-    djMiko.play();
-  });
+  // miko.addEventListener("click", () => {
+  //   const djMiko = new Audio(sounds[1].soundURL)
+  //   console.log(sounds[1].name)
+  //   djMiko.play();
+  // });
 
-  chrisi.addEventListener("click", () => {
-    djChrisinator.play();
-  });
+  // chrisi.addEventListener("click", () => {
+  //   djChrisinator.play();
+  // });
 
   // function playSong() {
   //     audio.play();
@@ -99,4 +133,45 @@ window.addEventListener("load", () => {
   // audio.loop = false;
   // audio.src = playlist[0];
   // audio.play();
+  // console.log(sounds.length);
+  // console.log('hallo')
 });
+
+
+function representSounds(sounds) {
+  const sortSounds = [];
+  const representSounds = document.getElementById('representSounds');
+// console.log(sounds[1].name)
+  representSounds.textContent = "";
+  for (const index in sounds) {
+    sortSounds.push(sounds[index]);
+  }
+  console.table(sortSounds);
+
+  if (sortSounds.length === 0) {
+    representSounds.textContent = 'Keine Sounds verfügbar';
+  } else {
+    for (let i = 0; i < sortSounds.length; i++) {
+      if (sortSounds[i] != null) {
+        const newSound = document.createElement("button");
+        // console.log(sortSounds.soundURL)
+        newSound.textContent = sortSounds[i].name;
+        newSound.setAttribute("class", "SoundsToPlay"); 
+        // newSound.setAttribute("id", sortSounds[i].name); 
+        // newSound.onclick( audioSound.play() = new Audio(sortSounds[i].soundURL));
+        newSound.addEventListener('click', () => {
+          const audioSound = new Audio(sortSounds[i].soundURL);
+          console.log(sortSounds[i].soundURL);
+          audioSound.play();
+        })
+        representSounds.appendChild(newSound);
+      }
+    }
+  }
+}
+
+// function playSound(sound) {
+//   const audioSound = new Audio(sound.soundURL);
+//   //   console.log(sounds[1].name)
+//     audioSound.play();
+// }
