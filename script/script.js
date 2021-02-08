@@ -18,27 +18,49 @@ window.addEventListener("load", () => {
   firebase.analytics();
 
   const storage = firebase.storage();
-  const storageRef = storage.ref();
+  const storageRef = storage.ref().child('basicSounds');
 
   const musicRef = storageRef.child('basicSounds');
   const spaceRef = storageRef.child('basicSounds/sound1.mp3')
 
- 
+  let sounds = [];
+
+  console.log(storageRef.listAll())
+  storageRef.listAll().then(res => {
+    res.items.forEach(itemRef => {
+      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+        // document.getElementById(`image${getIdOfPath(itemRef.fullPath)}`).src = url;
+        sounds.push({
+          name: "hallo",
+          soundURL: url
+        });
+        console.log(url)
+        
+        // introURL += url;
+        // console.log(url);
+      }).catch(err => {
+          console.error(err.message);
+      });
+    });
+  })
   
+
+  // console.log(sounds.name),
+  // console.log(soundURL)
   // console.log(spaceRef.toURL())
 
   // spaceRef.getDownloadURL().then(function(url) {
   //   console.log(url)
   // }
-let introURL = null;
 
-  spaceRef.getDownloadURL().then(url => {
-    // document.getElementById(`image${getIdOfPath(itemRef.fullPath)}`).src = url;
-    introURL = url;
-    // console.log(url);
-}).catch(err => {
-    console.error(err.message);
-}); 
+
+//   spaceRef.getDownloadURL().then(url => {
+//     // document.getElementById(`image${getIdOfPath(itemRef.fullPath)}`).src = url;
+//     introURL = url;
+//     // console.log(url);
+// }).catch(err => {
+//     console.error(err.message);
+// }); 
   
   
   
@@ -46,11 +68,12 @@ let introURL = null;
   // const djChrisinator = new Audio("https://firebasestorage.googleapis.com/v0/b/insanesounds-a6a16.appspot.com/o/basicSounds%2FDJChrisinator.mp3?alt=media&token=d0a00006-1a23-403f-b5ef-eea70c234a6d");
 
   intro.addEventListener("click", () => {
-    const Soundintro = new Audio(introURL);
+    const Soundintro = new Audio(sounds[0].soundURL);
     Soundintro.play();
   });
 
   miko.addEventListener("click", () => {
+    const djMiko = new Audio(sounds[1].soundURL)
     djMiko.play();
   });
 
