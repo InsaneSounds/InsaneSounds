@@ -56,8 +56,9 @@ window.addEventListener("load", () => {
 
   loadSounds.addEventListener('click', () => {
     // let sortetSounds = sortSounds(sounds);
+    loadSounds.style.display = 'none';
     representSounds(sounds);
-    console.log(sounds.length)
+    // console.log(sounds.length)
 //     const sortArr = [];
 // console.log(sounds[0].fullPath.split('sound')[1].split('_')[0])
 //     for (let i = 0; i != sounds.length; i++) {
@@ -158,7 +159,13 @@ function representSounds(sounds) {
         }    
         return 0;    
     }    
-}
+  }
+
+  function getRandomColor() {
+    const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
+    return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
+  }
+
   sortSounds.sort(GetSortOrder('id'));
 
   if (sortSounds.length === 0) {
@@ -166,22 +173,33 @@ function representSounds(sounds) {
   } else {
     for (let i = 0; i < sortSounds.length; i++) {
       if (sortSounds[i] != null) {
-        const newSound = document.createElement("button");
+        const newSound = document.createElement("p");
         // console.log(sortSounds.soundURL)
         newSound.textContent = sortSounds[i].name;
-        newSound.setAttribute("class", "SoundsToPlay"); 
-        // newSound.setAttribute("id", sortSounds[i].name); 
+        const color = getRandomColor();
+        // console.log(color)
+        newSound.setAttribute("class", "soundsToPlay"); 
+        newSound.style.backgroundColor = color;
+        newSound.style.border = `2px solid ${color}`;
+        // newSound.setAttribute("id", sortSounds[i].id + sortSounds[i].name); 
         // newSound.onclick( audioSound.play() = new Audio(sortSounds[i].soundURL));
         newSound.addEventListener('click', () => {
           const audioSound = new Audio(sortSounds[i].soundURL);
-          console.log(sortSounds[i].soundURL);
+          // console.log(sortSounds[i].soundURL);
           audioSound.play();
+
+          navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+          if (navigator.vibrate) {
+            navigator.vibrate([50]);
+          }
         })
+
         representSounds.appendChild(newSound);
       }
     }
   }
 }
+
 
 
 // function sortSounds(sounds) {

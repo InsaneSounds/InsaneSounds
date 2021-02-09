@@ -1,0 +1,105 @@
+body {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.2em;
+
+    margin: 0 auto;
+    padding: 0;
+
+    overflow-x: hidden;
+}
+
+#loadSounds {
+    min-width: 15vw;
+    min-height: 7vh;
+    display: flex;
+    border: 2px solid #76c3bd;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    background-color: #76c3bd;
+    border-radius: 10px;
+    box-shadow: 2px 5px 7px 0px rgb(133, 127, 127);
+    cursor: pointer;
+    padding: 0 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#representSounds {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: rgb(66, 55, 55); */
+    width: 80vw;
+    min-height: 10vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+}
+
+.soundsToPlay {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: row; */
+    text-align: center;
+    min-width: 20vw;
+    min-height: 4vw;
+
+    margin: 2vh 1.5vw;
+    padding: 0 10px;
+
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    /* color: #ffffff; */
+    cursor: pointer;
+    
+    border-radius: 10px;
+    box-shadow: 2px 5px 7px 0px rgb(133, 127, 127);
+}
+
+
+@media screen and (max-width:1024px) {
+    #representSounds {
+        width: 90vw;
+        /* min-height: 50vh; */
+    
+    }
+
+    .soundsToPlay {
+        min-width: 27vw;
+        min-height: 8vh;
+    }
+}
+
+@media screen and (max-width:768px) {
+    #representSounds {
+        width: 90vw;
+    }
+
+    .soundsToPlay {
+        min-width: 35vw;
+        min-height: 8vh;
+    }
+}
+
+@media screen and (max-width:720px) {
+    #representSounds {
+        width: 95vw;
+    }
+
+    .soundsToPlay {
+        min-width: 37vw;
+        min-height: 8vh;
+    }
+}
