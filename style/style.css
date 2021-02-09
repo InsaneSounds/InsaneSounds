@@ -16,13 +16,37 @@ body {
     overflow-x: hidden;
 }
 
+#soundboardWrapper {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    /* justify-content: center; */
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+#signInWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#signUpWrapper {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 #loadSounds {
     min-width: 15vw;
     min-height: 7vh;
     display: flex;
     border: 2px solid #76c3bd;
     /* text-align: center; */
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     background-color: #76c3bd;
     border-radius: 10px;
