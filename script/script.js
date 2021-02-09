@@ -150,52 +150,54 @@ window.addEventListener("load", () => {
 
       promise.then(() => {
         // sessionStorage.setItem('choseGoogle', true);
-        firebase.auth().signInWithEmailAndPassword(email, password);
+        // firebase.auth().signInWithEmailAndPassword(email, password);
       })
     }
 
     
   })
 
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      const uid = user.uid;
+      console.log(uid);
+      const storage = firebase.storage();
+      const storageRef = storage.ref().child('basicSounds');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const storage = firebase.storage();
-  const storageRef = storage.ref().child('basicSounds');
-
-  const sounds = [];
-  storageRef.listAll().then(res => {
-    res.items.forEach(itemRef => {
-      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-        sounds.push({
-          name: itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0],
-          soundURL: url,
-          fullPath: itemRef.fullPath,
-          id: itemRef.fullPath.split('sound')[1].split('_')[0]
+      const sounds = [];
+      storageRef.listAll().then(res => {
+        res.items.forEach(itemRef => {
+          storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+            sounds.push({
+              name: itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0],
+              soundURL: url,
+              fullPath: itemRef.fullPath,
+              id: itemRef.fullPath.split('sound')[1].split('_')[0]
+            });
+          }).catch(err => {
+              console.error(err);
+          });
         });
-      }).catch(err => {
-          console.error(err);
-      });
+      })
+
+      loadSounds.addEventListener('click', () => {
+        loadSounds.style.display = 'none';
+        representSounds(sounds);
+      })
+
+      
+    } else {
+      console.log('signed Out');
+    }
+  });
+
+  signOut.addEventListener('click', () => {
+    firebase.auth().signOut().then(() => {
+    }).catch((error) => {
     });
   })
 
-  loadSounds.addEventListener('click', () => {
-    loadSounds.style.display = 'none';
-    representSounds(sounds);
-  })
+  
 });
 
 function validatePassword(password) {
