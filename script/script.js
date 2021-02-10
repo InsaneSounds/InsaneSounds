@@ -18,28 +18,45 @@ window.addEventListener("load", () => {
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
 
-  const GoogleProvider = new firebase.auth.GoogleAuthProvider();
-  googleSignInBtn.addEventListener('click', () => {
+  // const provider = new firebase.auth.GoogleAuthProvider();
+  // googleSignInBtn.addEventListener('click', () => {
+  //   sessionStorage.setItem('choseGoogle', true);
     // const provider = new firebase.auth.GoogleAuthProvider();
-    // const promise = firebase.auth().signInWithPopup(provider);
+    // firebase.auth().useDeviceLanguage();
+    // firebase.auth().signInWithRedirect(provider);
+    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+    //   console.log(firebase.auth().currentUser.uid);
+    //   console.log(firebase.database(`/users/${firebase.auth().currentUser.uid}`).textContent);
+    //   if (firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`) === firebase.auth().currentUser.uid) {
+    //     console.log("sucsess");
+    //   } else {
+    //     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
+    //       email: firebase.auth().currentUser.email
+    //     });
+    //   }
+    // }).catch(error => {
+    //   console.log(error);
+    // })
+  // });
 
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-      // window.location.assign('./useres');
-    }).catch(error => {
-      console.log(error);
-    })
-  });
-
-  googleSignUpBtn.addEventListener('click', () => {
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-      firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
-        email: firebase.auth().currentUser.email
-      });
-    }).catch(error => {
-      console.log(error);
-    })
-    
-  })
+  // console.log(user.providerData);
+  // googleSignUpBtn.addEventListener('click', () => {
+  //   sessionStorage.setItem('choseGoogle', true);
+  //   // const provider = new firebase.auth.GoogleAuthProvider();
+  //   firebase.auth().useDeviceLanguage();
+  //   firebase.auth().signInWithRedirect(provider);
+    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+    //   // if (firebase.auth().currentUser.email) {
+    //   //   console.log("sucsess");
+    //   // } else {
+    //     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
+    //       email: firebase.auth().currentUser.email
+    //     });
+    //   // }
+    // }).catch(error => {
+    //   console.log(error);
+    // })
+  // })
 
 
   signUpBtn.addEventListener('click', () => {
@@ -173,8 +190,6 @@ window.addEventListener("load", () => {
       });
 
       promise.then(() => {
-        // sessionStorage.setItem('choseGoogle', true);
-        // firebase.auth().signInWithEmailAndPassword(email, password);
       })
     }
 
@@ -185,15 +200,21 @@ window.addEventListener("load", () => {
     if (user) {
       const uid = user.uid;
       console.log(uid);
+      // console.log(user.providerData[0].providerId);
       const storage = firebase.storage();
       const storageRef = storage.ref().child('basicSounds');
+      
 
       const sounds = [];
       storageRef.listAll().then(res => {
         res.items.forEach(itemRef => {
           storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+            let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
+            if (name.includes('WWM-')) {
+              name = name.split('WWM-')[1];
+            }
             sounds.push({
-              name: itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0],
+              name: name,
               soundURL: url,
               fullPath: itemRef.fullPath,
               id: itemRef.fullPath.split('sound')[1].split('_')[0]
@@ -212,15 +233,21 @@ window.addEventListener("load", () => {
       
     } else {
       console.log('signed Out');
+      // console.log(user.providerData[0].providerId);
     }
   });
 
-  signOut.addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-    }).catch((error) => {
-    });
-  })
+  // signOut.addEventListener('click', () => {
+  //   firebase.auth().signOut().then(() => {
+  //   }).catch((error) => {
+  //   });
+  // })
 
+  // let isASoundPlaying = document.getElementsByClassName(soundsToPlay);
+  // isASoundPlaying.addEventListener('click', () => {
+  //   for (let)
+  // })
+  //   console.log(isASoundPlaying);
   
 });
 
@@ -266,6 +293,67 @@ function representSounds(sounds) {
     }    
   }
 
+  // function play(playOneSound, sound) {
+    // const files = document.getElementsByClassName('soundsToPlay');
+    // console.log(files);
+    // for (let i = 0; i<= files.length; i++) {
+    //   files[playOneSound].addEventListener('click', () => {
+    //     new Audio(sortSounds[i].soundURL).stop();
+    //   })
+    //   // console.log(files[i].addEventListener);
+    // }
+    // document.getElementsByClassName('soundsToPlay').stop();
+
+    // const audioSound = n#ew Audio(song);
+    // const audio = document.querySelector("#audio");
+
+    // audio.pause();
+    // audio.currentTime = 0;
+    // let xGroup = document.getElementsByClassName('soundsToPlay');
+    // console.log(xGroup);
+    // for (let i = 0; i < xGroup.length; i++) {
+    //   // soundsToPlay.addEventListener('')
+    //   xGroup[i].pause();
+    //   xGroup[i].currentTime = 0;
+    // }
+
+    // const allAudios = document.getElementsByClassName('soundsToPlay');
+
+    // console.log(allAudios);
+    // for(let i = 0; i < allAudios.length; i++){
+    //   // if(allAudios[i] != e.target){
+    //       allAudios[i].pause();
+    //   // }
+    // }
+    // audioSound.pause();
+    
+    // pauseAll();
+    // const players = document.getElementsByClassName("soundsToPlay");
+    // for (let i = 0; i < players.length; i++) {
+    //   players[i].pause;
+    // }
+    // audioSound.play();
+    // console.log(audioSound.);
+    // playOneSound = true;
+    // if(playOneSound >=2) {
+    //   audioSound.pause();
+    //   playOneSound = 0;
+    // }
+    // console.log(playOneSound)
+    // navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    // if (navigator.vibrate) {
+    //   navigator.vibrate([50]);
+    // }
+  // }
+
+  function pauseAll(){
+    var players = document.querySelector('.soundsToPlay');
+    for (let i = 0; i < players.length; i++) {
+     players[i].pause; 
+     console.log(players[i])
+    }
+   }
+
   function getRandomColor() {
     const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
     return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
@@ -276,18 +364,40 @@ function representSounds(sounds) {
   if (sortSounds.length === 0) {
     representSounds.textContent = 'Keine Sounds verfügbar';
   } else {
+    var playOneSound = -1;
     for (let i = 0; i < sortSounds.length; i++) {
       if (sortSounds[i] != null) {
+        // const newAudio = document.createElement("audio");
+        // // const newSound = document.createElement()
+        // newAudio.id = 'audio'
+        // newAudio.controls = 'controls';
+        // newAudio.src = sortSounds[i].soundURL;
+        // newAudio.type = 'audi/mpeg';
+
+        // newAudio.setAttribute("class", "soundsToPlay"); 
+        // newAudio.addEventListener('click', () => {
+        //   play(i);
+        // });
+        // representSounds.appendChild(newAudio);
+
         const newSound = document.createElement("p");
         newSound.textContent = sortSounds[i].name;
         const color = getRandomColor();
         newSound.setAttribute("class", "soundsToPlay"); 
+        newSound.setAttribute('id', i);
+        // const soundsToPlay = document.getElementsByName("soundsToPlay");
         newSound.style.backgroundColor = color;
         newSound.style.border = `2px solid ${color}`;
         newSound.addEventListener('click', () => {
-          const audioSound = new Audio(sortSounds[i].soundURL);
-          audioSound.play();
-
+          playOneSound = i;
+          console.log(playOneSound);
+          // play(playOneSound, sortSounds[i].soundURL);
+          new Audio(sortSounds[i].soundURL).play();
+          // if (sounds) {
+          //   audioSound.stop();
+          // }
+          // audioSound.play();
+          
           navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
           if (navigator.vibrate) {
             navigator.vibrate([50]);
