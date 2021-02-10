@@ -18,6 +18,30 @@ window.addEventListener("load", () => {
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
 
+  const GoogleProvider = new firebase.auth.GoogleAuthProvider();
+  googleSignInBtn.addEventListener('click', () => {
+    // const provider = new firebase.auth.GoogleAuthProvider();
+    // const promise = firebase.auth().signInWithPopup(provider);
+
+    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+      // window.location.assign('./useres');
+    }).catch(error => {
+      console.log(error);
+    })
+  });
+
+  googleSignUpBtn.addEventListener('click', () => {
+    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+      firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
+        email: firebase.auth().currentUser.email
+      });
+    }).catch(error => {
+      console.log(error);
+    })
+    
+  })
+
+
   signUpBtn.addEventListener('click', () => {
     const email = document.getElementById("emailUp").value;
     const password = document.getElementById("passwordUp").value;
