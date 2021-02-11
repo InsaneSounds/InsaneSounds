@@ -192,8 +192,6 @@ window.addEventListener("load", () => {
       promise.then(() => {
       })
     }
-
-    
   })
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -201,56 +199,187 @@ window.addEventListener("load", () => {
       const uid = user.uid;
       console.log(uid);
       // console.log(user.providerData[0].providerId);
-      const storage = firebase.storage();
-      const storageRef = storage.ref().child('basicSounds');
       
 
-      const sounds = [];
-      storageRef.listAll().then(res => {
-        res.items.forEach(itemRef => {
-          storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-            let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-            if (name.includes('WWM-')) {
-              name = name.split('WWM-')[1];
-            }
-            sounds.push({
-              name: name,
-              soundURL: url,
-              fullPath: itemRef.fullPath,
-              id: itemRef.fullPath.split('sound')[1].split('_')[0]
-            });
-          }).catch(err => {
-              console.error(err);
-          });
-        });
-      })
-
-      loadSounds.addEventListener('click', () => {
-        loadSounds.style.display = 'none';
-        representSounds(sounds);
-      })
-
-      
+      // loadSounds.addEventListener('click', () => {
+      //   loadSounds.style.display = 'none';
+      //   representSounds(sounds);
+      // })  
     } else {
       console.log('signed Out');
       // console.log(user.providerData[0].providerId);
     }
   });
 
+  
   // signOut.addEventListener('click', () => {
   //   firebase.auth().signOut().then(() => {
   //   }).catch((error) => {
   //   });
   // })
 
-  // let isASoundPlaying = document.getElementsByClassName(soundsToPlay);
-  // isASoundPlaying.addEventListener('click', () => {
-  //   for (let)
+
+  const storage = firebase.storage();
+  const storageRef = storage.ref().child('basicSounds');
+  
+  let sounds = [];
+  storageRef.listAll().then(res => {
+    res.items.forEach(itemRef => {
+      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
+        if (name.includes('WWM-')) {
+          name = name.split('WWM-')[1];
+        }
+        sounds.push({
+          name: name,
+          soundURL: url,
+          fullPath: itemRef.fullPath,
+          id: itemRef.fullPath.split('sound')[1].split('_')[0]
+        });
+      }).catch(err => {
+          console.error(err);
+      });
+    });
+  })
+
+  let allSounds = {};
+  let audios = {};
+  let representSounds = document.getElementById('representSounds');
+  loadSounds.addEventListener('click', () => {
+    loadSounds.style.display = 'none';
+    pleasePlay(sounds, allSounds);
+    loadAudio(allSounds, audios);
+    createbutton(audios, representSounds);
+    // console.log(representSounds)
+  }) 
+  
+  representSounds.addEventListener('click', (event) => {
+    playSound(audios, event);
+    
+  })
+  // console.log(numberOfItems);
+  // sounds.forEach(item => {
+  //   console.log(item);
   // })
-  //   console.log(isASoundPlaying);
+  
+
+  
+  // console.log(sounds[5]);
+  // let sortSounds = [];
+  // representSounds.textContent = "";
+  // for (const index in sounds) {
+  //   sortSounds.push(sounds[index]);
+  // }
+  // sortSounds
+
+  
+
+  
+
+  // console.log(sortSounds)
+  
+  // sortSounds = sortSounds.sort(GetSortOrder('id'));
+  // console.log(sortSounds)
+  
+  // console.log(sortSounds[1].name)
+  // console.log(allSounds);
+  
+  
+  // console.log(sortSounds);
+
+
+  // if (sounds.length === 0) {
+  //   representSounds.textContent = 'Keine Sounds verfügbar';
+  // } else {
+
+  //   let allSounds = getAllSounds(sounds);
+  //   console.log(allSounds.id)
+    
+  //   console.log(sounds);
+  //   console.log(audios)
+  
+  //   let representSounds = document.getElementById("representSounds");
+    
+  //   console.log(representSounds)
+
+
+    
+  // }
   
 });
 
+function pleasePlay(sounds, allSounds) {
+  // sounds.forEach(element => {
+  //   console.log(element);
+  // });
+  // let allSounds = {};
+    
+  for (let i = 0; i < sounds.length; i++) {
+    allSounds[sounds[i].name] = sounds[i].soundURL;
+    // console.log(allSounds);
+  }
+  // console.log(allSounds);
+  
+  // return allSounds;
+}
+
+function loadAudio(sounds, audios) {
+  // let audios = {};
+  for (let [title, url] of Object.entries(sounds)) {
+    audios[title] = new Audio(url);
+      
+  }
+  // console.log(audios)
+  // return audios;
+}
+
+function createbutton(audios, representSounds) {
+  for (let title of Object.keys(audios)) {
+    let newSound = document.createElement("p");
+    newSound.setAttribute("class", "soundsToPlay"); 
+    newSound.textContent = title;
+    const color = getRandomColor();
+    newSound.style.backgroundColor = color;
+    newSound.style.border = `2px solid ${color}`;
+    newSound.dataset["audio"] = title;
+    representSounds.appendChild(newSound);
+    // console.log(representSounds)
+  }
+  // return representSounds;
+}
+
+function playSound(audios, event) {
+  let audio = audios[event.target.dataset["audio"]];
+  console.log(audio);
+  // console.log(audios)
+  if (audio) {
+    for (let audio of Object.values(audios)) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    audio.play();
+    
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    if (navigator.vibrate) {
+      navigator.vibrate([50]);
+    }
+  }
+}
+
+function getAllSounds(sounds) {
+  sounds.forEach(element => {
+    console.log(element);
+  });
+  let allSounds = {};
+    
+  for (let i = 0; i < sounds.length; i++) {
+    allSounds[sounds[i].name] = sounds[i].soundURL;
+    console.log(allSounds);
+  }
+  console.log(sounds);
+  
+  return allSounds;
+}
 function validatePassword(password) {
   return (
     /[a-z]/.test(password) &&
@@ -285,135 +414,140 @@ function GetSortOrder(sortetArr) {
   }    
 }
 
-function representSounds(sounds) {
-  let sortSounds = [];
-  const representSounds = document.getElementById('representSounds');
-  representSounds.textContent = "";
-  for (const index in sounds) {
-    sortSounds.push(sounds[index]);
-  }
-
-  
-
-  function getRandomColor() {
-    const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
-    return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
-  }
-
-  // console.log(sortSounds)
-  
-  sortSounds = sortSounds.sort(GetSortOrder('id'));
-  console.log(sortSounds)
-  
-  // console.log(sortSounds[1].name)
-  // console.log(allSounds);
-  
-  
-  // console.log(sortSounds);
-
-
-  if (sortSounds.length === 0) {
-    representSounds.textContent = 'Keine Sounds verfügbar';
-  } else {
-    let allSounds = {};
-    
-    for (let i = 0; i < sortSounds.length; i++) {
-      allSounds[sortSounds[i].name] = sortSounds[i].soundURL;
-    }
-
-    let audios = {};
-    for (let [title, url] of Object.entries(allSounds)) {
-        audios[title] = new Audio(url);
-        
-    }
-    console.log(sortSounds);
-    console.log(audios)
-  
-    let representSounds = document.getElementById("representSounds");
-    for (let title of Object.keys(audios)) {
-      let newSound = document.createElement("p");
-      newSound.setAttribute("class", "soundsToPlay"); 
-      newSound.textContent = title;
-      const color = getRandomColor();
-      newSound.style.backgroundColor = color;
-      newSound.style.border = `2px solid ${color}`;
-      newSound.dataset["audio"] = title;
-      representSounds.appendChild(newSound);
-      // console.log('dajbfnds')
-    }
-    
-
-    // for (let i = 0; i < sortSounds.length; i++) {
-    //   sortSounds[i].title = new Audio(sortSounds[i].soundURL)
-    // }
-
-    // console.log(sortSounds);
-
-    representSounds.addEventListener('click', (event) => {
-      let audio = sortSounds[event.target.dataset["audio"]];
-      if (audio) {
-        for (let audio of Object.values(audios)) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-        audio.play();
-        
-        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-        if (navigator.vibrate) {
-          navigator.vibrate([50]);
-        }
-      }
-    })
-    // var playOneSound = -1;
-    // for (let i = 0; i < sortSounds.length; i++) {
-    //   if (sortSounds[i] != null) {
-        
-
-
-
-        // const color = getRandomColor();
-
-        // const newAudio = document.createElement("audio");
-        // const startNewAudio = document.createElement("p");
-        // startNewAudio.textContent = sortSounds[i].name;
-        // newAudio.setAttribute('src', sortSounds[i].soundURL);
-
-        // startNewAudio.setAttribute("class", "soundsToPlay"); 
-        // startNewAudio.style.backgroundColor = color;
-        // startNewAudio.style.border = `2px solid ${color}`;
-        // startNewAudio.addEventListener('click', () => {
-        //   stopAll();
-        //   newAudiostart();
-        // });
-        // representSounds.appendChild(newAudio);
-        // representSounds.appendChild(startNewAudio);
-        // console.log("hallo");
-
-        // const newSound = document.createElement("p");
-        // newSound.textContent = sortSounds[i].name;
-        // const color = getRandomColor();
-        // newSound.setAttribute("class", "soundsToPlay"); 
-        // newSound.setAttribute('id', i);
-        // // const soundsToPlay = document.getElementsByName("soundsToPlay");
-        // newSound.style.backgroundColor = color;
-        // newSound.style.border = `2px solid ${color}`;
-        // newSound.addEventListener('click', () => {
-        //   playOneSound = i;
-        //   console.log(playOneSound);
-        //   // play(playOneSound, sortSounds[i].soundURL);
-        //   new Audio(sortSounds[i].soundURL).play();
-        //   // if (sounds) {
-        //   //   audioSound.stop();
-        //   // }
-        //   // audioSound.play();
-          
-        //   navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-        //   if (navigator.vibrate) {
-        //     navigator.vibrate([50]);
-        //   }
-        // })
-        // representSounds.appendChild(newSound);
-    //   }
-    // }
-  }
+function getRandomColor() {
+  const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
+  return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
 }
+
+// function representSounds(sounds) {
+//   let sortSounds = [];
+//   const representSounds = document.getElementById('representSounds');
+//   representSounds.textContent = "";
+//   for (const index in sounds) {
+//     sortSounds.push(sounds[index]);
+//   }
+
+  
+
+//   function getRandomColor() {
+//     const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
+//     return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
+//   }
+
+//   // console.log(sortSounds)
+  
+//   sortSounds = sortSounds.sort(GetSortOrder('id'));
+//   console.log(sortSounds)
+  
+//   // console.log(sortSounds[1].name)
+//   // console.log(allSounds);
+  
+  
+//   // console.log(sortSounds);
+
+
+//   if (sortSounds.length === 0) {
+//     representSounds.textContent = 'Keine Sounds verfügbar';
+//   } else {
+//     let allSounds = {};
+    
+//     for (let i = 0; i < sortSounds.length; i++) {
+//       allSounds[sortSounds[i].name] = sortSounds[i].soundURL;
+//     }
+
+//     let audios = {};
+//     for (let [title, url] of Object.entries(allSounds)) {
+//         audios[title] = new Audio(url);
+        
+//     }
+//     console.log(sortSounds);
+//     console.log(audios)
+  
+//     let representSounds = document.getElementById("representSounds");
+//     for (let title of Object.keys(audios)) {
+//       let newSound = document.createElement("p");
+//       newSound.setAttribute("class", "soundsToPlay"); 
+//       newSound.textContent = title;
+//       const color = getRandomColor();
+//       newSound.style.backgroundColor = color;
+//       newSound.style.border = `2px solid ${color}`;
+//       newSound.dataset["audio"] = title;
+//       representSounds.appendChild(newSound);
+//       // console.log('dajbfnds')
+//     }
+    
+
+//     // for (let i = 0; i < sortSounds.length; i++) {
+//     //   sortSounds[i].title = new Audio(sortSounds[i].soundURL)
+//     // }
+
+//     // console.log(sortSounds);
+
+//     representSounds.addEventListener('click', (event) => {
+//       let audio = sortSounds[event.target.dataset["audio"]];
+//       if (audio) {
+//         for (let audio of Object.values(audios)) {
+//           audio.pause();
+//           audio.currentTime = 0;
+//         }
+//         audio.play();
+        
+//         navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+//         if (navigator.vibrate) {
+//           navigator.vibrate([50]);
+//         }
+//       }
+//     })
+//     // var playOneSound = -1;
+//     // for (let i = 0; i < sortSounds.length; i++) {
+//     //   if (sortSounds[i] != null) {
+        
+
+
+
+//         // const color = getRandomColor();
+
+//         // const newAudio = document.createElement("audio");
+//         // const startNewAudio = document.createElement("p");
+//         // startNewAudio.textContent = sortSounds[i].name;
+//         // newAudio.setAttribute('src', sortSounds[i].soundURL);
+
+//         // startNewAudio.setAttribute("class", "soundsToPlay"); 
+//         // startNewAudio.style.backgroundColor = color;
+//         // startNewAudio.style.border = `2px solid ${color}`;
+//         // startNewAudio.addEventListener('click', () => {
+//         //   stopAll();
+//         //   newAudiostart();
+//         // });
+//         // representSounds.appendChild(newAudio);
+//         // representSounds.appendChild(startNewAudio);
+//         // console.log("hallo");
+
+//         // const newSound = document.createElement("p");
+//         // newSound.textContent = sortSounds[i].name;
+//         // const color = getRandomColor();
+//         // newSound.setAttribute("class", "soundsToPlay"); 
+//         // newSound.setAttribute('id', i);
+//         // // const soundsToPlay = document.getElementsByName("soundsToPlay");
+//         // newSound.style.backgroundColor = color;
+//         // newSound.style.border = `2px solid ${color}`;
+//         // newSound.addEventListener('click', () => {
+//         //   playOneSound = i;
+//         //   console.log(playOneSound);
+//         //   // play(playOneSound, sortSounds[i].soundURL);
+//         //   new Audio(sortSounds[i].soundURL).play();
+//         //   // if (sounds) {
+//         //   //   audioSound.stop();
+//         //   // }
+//         //   // audioSound.play();
+          
+//         //   navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+//         //   if (navigator.vibrate) {
+//         //     navigator.vibrate([50]);
+//         //   }
+//         // })
+//         // representSounds.appendChild(newSound);
+//     //   }
+//     // }
+//   }
+// }
