@@ -198,6 +198,44 @@ window.addEventListener("load", () => {
     if (user) {
       const uid = user.uid;
       console.log(uid);
+
+
+      const storage = firebase.storage();
+    
+      // let sounds = getItemsFromDatabase(storageRef);
+      // console.log(storageRef.listAll());
+
+      let sounds = []
+      let allSounds = {};
+      let audios = {};
+      let representSounds = document.getElementById('representSounds');
+      loadSounds.addEventListener('click', () => {
+        // loadSounds.style.display = 'none';
+        
+          const storageRef = storage.ref().child('basicSounds');
+          getItemsFromDatabase(storage, storageRef, sounds);
+          
+          pleasePlay(sounds, allSounds, audios, representSounds);
+          // console.log(sounds.length);
+          // createbutton(audios, representSounds);
+        // }
+        // console.log(representSounds);
+        
+        
+        // loadAudio(allSounds, );
+        // console.log(audios);
+        // if (sounds.length === 0) {
+        //   pleasePlay(sounds, allSounds, audios, representSounds);
+        //   createbutton(audios, representSounds);
+        // }
+        
+        // console.log(representSounds)
+      }) 
+      
+      representSounds.addEventListener('click', (event) => {
+        playSound(audios, event);
+        
+      })
       // console.log(user.providerData[0].providerId);
       
 
@@ -219,44 +257,7 @@ window.addEventListener("load", () => {
   // })
 
 
-  const storage = firebase.storage();
-  const storageRef = storage.ref().child('basicSounds');
   
-  let sounds = [];
-  storageRef.listAll().then(res => {
-    res.items.forEach(itemRef => {
-      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-        if (name.includes('WWM-')) {
-          name = name.split('WWM-')[1];
-        }
-        sounds.push({
-          name: name,
-          soundURL: url,
-          fullPath: itemRef.fullPath,
-          id: itemRef.fullPath.split('sound')[1].split('_')[0]
-        });
-      }).catch(err => {
-          console.error(err);
-      });
-    });
-  })
-
-  let allSounds = {};
-  let audios = {};
-  let representSounds = document.getElementById('representSounds');
-  loadSounds.addEventListener('click', () => {
-    loadSounds.style.display = 'none';
-    pleasePlay(sounds, allSounds);
-    loadAudio(allSounds, audios);
-    createbutton(audios, representSounds);
-    // console.log(representSounds)
-  }) 
-  
-  representSounds.addEventListener('click', (event) => {
-    playSound(audios, event);
-    
-  })
   // console.log(numberOfItems);
   // sounds.forEach(item => {
   //   console.log(item);
@@ -308,32 +309,51 @@ window.addEventListener("load", () => {
   
 });
 
-function pleasePlay(sounds, allSounds) {
+function getItemsFromDatabase(storage, storageRef, sounds) {
+  // let sounds = [];
+  storageRef.listAll().then(res => {
+    res.items.forEach(itemRef => {
+      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
+        if (name.includes('WWM-')) {
+          name = name.split('WWM-')[1];
+        }
+        sounds.push({
+          name: name,
+          soundURL: url,
+          fullPath: itemRef.fullPath,
+          id: itemRef.fullPath.split('sound')[1].split('_')[0]
+        });
+        // console.log(res);
+      }).catch(err => {
+          console.error(err);
+      });
+    });
+  })
+  // return sounds;
+  // console.log(sounds.length);
+  // console.log("hi");
+}
+
+function pleasePlay(sounds, allSounds, audios, representSounds) {
   // sounds.forEach(element => {
   //   console.log(element);
   // });
   // let allSounds = {};
+  sounds = sounds.sort(GetSortOrder('id'));
     
+  // console.log(sounds);
   for (let i = 0; i < sounds.length; i++) {
     allSounds[sounds[i].name] = sounds[i].soundURL;
     // console.log(allSounds);
   }
+
   // console.log(allSounds);
-  
-  // return allSounds;
-}
-
-function loadAudio(sounds, audios) {
-  // let audios = {};
-  for (let [title, url] of Object.entries(sounds)) {
+  for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
-      
   }
-  // console.log(audios)
-  // return audios;
-}
 
-function createbutton(audios, representSounds) {
+  representSounds.textContent = '';
   for (let title of Object.keys(audios)) {
     let newSound = document.createElement("p");
     newSound.setAttribute("class", "soundsToPlay"); 
@@ -343,14 +363,29 @@ function createbutton(audios, representSounds) {
     newSound.style.border = `2px solid ${color}`;
     newSound.dataset["audio"] = title;
     representSounds.appendChild(newSound);
-    // console.log(representSounds)
   }
-  // return representSounds;
+  
 }
+
+// function loadAudio(allSounds, audios) {
+//   // let audios = {};
+  
+//   // console.log(audios)
+//   // return audios;
+  
+// }
+
+// function createbutton(audios, representSounds) {
+//   console.log(audios);
+  
+//   console.log(Object.keys(audios));
+//   // return representSounds;
+//   console.log("hi4");
+// }
 
 function playSound(audios, event) {
   let audio = audios[event.target.dataset["audio"]];
-  console.log(audio);
+  // console.log(audio);
   // console.log(audios)
   if (audio) {
     for (let audio of Object.values(audios)) {
@@ -364,22 +399,23 @@ function playSound(audios, event) {
       navigator.vibrate([50]);
     }
   }
+  // console.log("hi5");
 }
 
-function getAllSounds(sounds) {
-  sounds.forEach(element => {
-    console.log(element);
-  });
-  let allSounds = {};
+// function getAllSounds(sounds) {
+//   sounds.forEach(element => {
+//     console.log(element);
+//   });
+//   let allSounds = {};
     
-  for (let i = 0; i < sounds.length; i++) {
-    allSounds[sounds[i].name] = sounds[i].soundURL;
-    console.log(allSounds);
-  }
-  console.log(sounds);
+//   for (let i = 0; i < sounds.length; i++) {
+//     allSounds[sounds[i].name] = sounds[i].soundURL;
+//     console.log(allSounds);
+//   }
+//   console.log(sounds);
   
-  return allSounds;
-}
+//   return allSounds;
+// }
 function validatePassword(password) {
   return (
     /[a-z]/.test(password) &&
