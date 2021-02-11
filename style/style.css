@@ -32,14 +32,14 @@ body {
 }
 
 #signInWrapper {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 #signUpWrapper {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;

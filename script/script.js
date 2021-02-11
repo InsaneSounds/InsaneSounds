@@ -18,45 +18,75 @@ window.addEventListener("load", () => {
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
 
-  // const provider = new firebase.auth.GoogleAuthProvider();
-  // googleSignInBtn.addEventListener('click', () => {
-  //   sessionStorage.setItem('choseGoogle', true);
+  const provider = new firebase.auth.GoogleAuthProvider();
+  googleSignInBtn.addEventListener('click', () => {
+    // sessionStorage.setItem('choseGoogle', true);
     // const provider = new firebase.auth.GoogleAuthProvider();
-    // firebase.auth().useDeviceLanguage();
-    // firebase.auth().signInWithRedirect(provider);
-    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-    //   console.log(firebase.auth().currentUser.uid);
-    //   console.log(firebase.database(`/users/${firebase.auth().currentUser.uid}`).textContent);
-    //   if (firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`) === firebase.auth().currentUser.uid) {
-    //     console.log("sucsess");
-    //   } else {
-    //     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
-    //       email: firebase.auth().currentUser.email
-    //     });
-    //   }
-    // }).catch(error => {
-    //   console.log(error);
-    // })
-  // });
+    firebase.auth().useDeviceLanguage();
+    firebase.auth().signInWithRedirect(provider);
+    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+      // console.log(firebase.auth().currentUser.uid);
+      // console.log(firebase.database(`/users/${firebase.auth().currentUser.uid}`).textContent);
+      // if (firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`) === firebase.auth().currentUser.uid) {
+      //   console.log("sucsess");
+      // } else {
+        
+      // }
+    }).catch(error => {
+      console.log(error);
+    })
+  });
+
+  const appleProvider = new firebase.auth.OAuthProvider('apple.com');
+  appleSignUpBtn.addEventListener('click', () => {
+    firebase
+    .auth()
+    .currentUser
+    .reauthenticateWithPopup(appleProvider)
+    .then((result) => {
+      // User is re-authenticated with fresh tokens minted and can perform
+      // sensitive operations like account deletion, or updating their email
+      // address or password.
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+  
+      // The signed-in user info.
+      var user = result.user;
+       // You can also get the Apple OAuth Access and ID Tokens.
+      var accessToken = credential.accessToken;
+      var idToken = credential.idToken;
+  
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+  
+      // ...
+    });
+  })
 
   // console.log(user.providerData);
-  // googleSignUpBtn.addEventListener('click', () => {
-  //   sessionStorage.setItem('choseGoogle', true);
-  //   // const provider = new firebase.auth.GoogleAuthProvider();
-  //   firebase.auth().useDeviceLanguage();
-  //   firebase.auth().signInWithRedirect(provider);
-    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-    //   // if (firebase.auth().currentUser.email) {
-    //   //   console.log("sucsess");
-    //   // } else {
-    //     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
-    //       email: firebase.auth().currentUser.email
-    //     });
-    //   // }
-    // }).catch(error => {
-    //   console.log(error);
-    // })
-  // })
+  googleSignUpBtn.addEventListener('click', () => {
+    // sessionStorage.setItem('choseGoogle', true);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().useDeviceLanguage();
+    firebase.auth().signInWithRedirect(provider);
+    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+      // if (firebase.auth().currentUser.email) {
+      //   console.log("sucsess");
+      // } else {
+        
+      // }
+    }).catch(error => {
+      console.log(error);
+    })
+  })
 
 
   signUpBtn.addEventListener('click', () => {
@@ -250,11 +280,11 @@ window.addEventListener("load", () => {
   });
 
   
-  // signOut.addEventListener('click', () => {
-  //   firebase.auth().signOut().then(() => {
-  //   }).catch((error) => {
-  //   });
-  // })
+  signOut.addEventListener('click', () => {
+    firebase.auth().signOut().then(() => {
+    }).catch((error) => {
+    });
+  })
 
 
   
