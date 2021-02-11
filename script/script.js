@@ -346,11 +346,12 @@ function representSounds(sounds) {
     // }
   // }
 
-  function pauseAll(){
-    var players = document.querySelector('.soundsToPlay');
+  function stopAll(){
+    var players = document.querySelectorAll('audio');
     for (let i = 0; i < players.length; i++) {
-     players[i].pause; 
-     console.log(players[i])
+     players[i].src.pause; 
+     players[i].src.currentTime = 0;
+    //  console.log(players[i])
     }
    }
 
@@ -364,46 +365,55 @@ function representSounds(sounds) {
   if (sortSounds.length === 0) {
     representSounds.textContent = 'Keine Sounds verfügbar';
   } else {
-    var playOneSound = -1;
+    // var playOneSound = -1;
     for (let i = 0; i < sortSounds.length; i++) {
       if (sortSounds[i] != null) {
-        // const newAudio = document.createElement("audio");
-        // // const newSound = document.createElement()
-        // newAudio.id = 'audio'
-        // newAudio.controls = 'controls';
-        // newAudio.src = sortSounds[i].soundURL;
-        // newAudio.type = 'audi/mpeg';
+        
 
-        // newAudio.setAttribute("class", "soundsToPlay"); 
-        // newAudio.addEventListener('click', () => {
-        //   play(i);
+
+
+        // const color = getRandomColor();
+
+        // const newAudio = document.createElement("audio");
+        // const startNewAudio = document.createElement("p");
+        // startNewAudio.textContent = sortSounds[i].name;
+        // newAudio.setAttribute('src', sortSounds[i].soundURL);
+
+        // startNewAudio.setAttribute("class", "soundsToPlay"); 
+        // startNewAudio.style.backgroundColor = color;
+        // startNewAudio.style.border = `2px solid ${color}`;
+        // startNewAudio.addEventListener('click', () => {
+        //   stopAll();
+        //   newAudiostart();
         // });
         // representSounds.appendChild(newAudio);
+        // representSounds.appendChild(startNewAudio);
+        // console.log("hallo");
 
-        const newSound = document.createElement("p");
-        newSound.textContent = sortSounds[i].name;
-        const color = getRandomColor();
-        newSound.setAttribute("class", "soundsToPlay"); 
-        newSound.setAttribute('id', i);
-        // const soundsToPlay = document.getElementsByName("soundsToPlay");
-        newSound.style.backgroundColor = color;
-        newSound.style.border = `2px solid ${color}`;
-        newSound.addEventListener('click', () => {
-          playOneSound = i;
-          console.log(playOneSound);
-          // play(playOneSound, sortSounds[i].soundURL);
-          new Audio(sortSounds[i].soundURL).play();
-          // if (sounds) {
-          //   audioSound.stop();
-          // }
-          // audioSound.play();
+        // const newSound = document.createElement("p");
+        // newSound.textContent = sortSounds[i].name;
+        // const color = getRandomColor();
+        // newSound.setAttribute("class", "soundsToPlay"); 
+        // newSound.setAttribute('id', i);
+        // // const soundsToPlay = document.getElementsByName("soundsToPlay");
+        // newSound.style.backgroundColor = color;
+        // newSound.style.border = `2px solid ${color}`;
+        // newSound.addEventListener('click', () => {
+        //   playOneSound = i;
+        //   console.log(playOneSound);
+        //   // play(playOneSound, sortSounds[i].soundURL);
+        //   new Audio(sortSounds[i].soundURL).play();
+        //   // if (sounds) {
+        //   //   audioSound.stop();
+        //   // }
+        //   // audioSound.play();
           
-          navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-          if (navigator.vibrate) {
-            navigator.vibrate([50]);
-          }
-        })
-        representSounds.appendChild(newSound);
+        //   navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+        //   if (navigator.vibrate) {
+        //     navigator.vibrate([50]);
+        //   }
+        // })
+        // representSounds.appendChild(newSound);
       }
     }
   }
