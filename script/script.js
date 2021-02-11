@@ -37,40 +37,6 @@ window.addEventListener("load", () => {
     })
   });
 
-  const appleProvider = new firebase.auth.OAuthProvider('apple.com');
-  appleSignUpBtn.addEventListener('click', () => {
-    firebase
-    .auth()
-    .currentUser
-    .reauthenticateWithPopup(appleProvider)
-    .then((result) => {
-      // User is re-authenticated with fresh tokens minted and can perform
-      // sensitive operations like account deletion, or updating their email
-      // address or password.
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
-  
-      // The signed-in user info.
-      var user = result.user;
-       // You can also get the Apple OAuth Access and ID Tokens.
-      var accessToken = credential.accessToken;
-      var idToken = credential.idToken;
-  
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-  
-      // ...
-    });
-  })
-
   // console.log(user.providerData);
   googleSignUpBtn.addEventListener('click', () => {
     // sessionStorage.setItem('choseGoogle', true);
