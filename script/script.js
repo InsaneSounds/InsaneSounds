@@ -18,177 +18,7 @@ window.addEventListener("load", () => {
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
 
-  const provider = new firebase.auth.GoogleAuthProvider();
-  googleSignInBtn.addEventListener('click', () => {
-    // sessionStorage.setItem('choseGoogle', true);
-    // const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().useDeviceLanguage();
-    firebase.auth().signInWithRedirect(provider);
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-      // console.log(firebase.auth().currentUser.uid);
-      // console.log(firebase.database(`/users/${firebase.auth().currentUser.uid}`).textContent);
-      // if (firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`) === firebase.auth().currentUser.uid) {
-      //   console.log("sucsess");
-      // } else {
-        
-      // }
-    }).catch(error => {
-      console.log(error);
-    })
-  });
-
-  // console.log(user.providerData);
-  googleSignUpBtn.addEventListener('click', () => {
-    // sessionStorage.setItem('choseGoogle', true);
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().useDeviceLanguage();
-    firebase.auth().signInWithRedirect(provider);
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
-      // if (firebase.auth().currentUser.email) {
-      //   console.log("sucsess");
-      // } else {
-        
-      // }
-    }).catch(error => {
-      console.log(error);
-    })
-  })
-
-
-  signUpBtn.addEventListener('click', () => {
-    const email = document.getElementById("emailUp").value;
-    const password = document.getElementById("passwordUp").value;
-    const emUpFeedback = document.getElementById("emUpFeedback");
-    const pwUpFeedback = document.getElementById("pwUpFeedback");
-    let isValid = true;
-
-    if (email === '' || email === ' ') {
-      emUpFeedback.textContent = 'Bitte geben Sie eine E-Mail Adresse ein.'
-      isValid = false;
-    } else if (validateEmail(email)) {
-      emUpFeedback.textContent = '';
-    } else {
-      // email is invalid
-      emUpFeedback.textContent = "Ungültige E-Mail Adresse.";
-      isValid = false;
-    }
-
-    if (password === '' || password === ' ') {
-      pwUpFeedback.textContent = "Bitte geben Sie ein Passwort ein.";
-      isValid = false;
-    } else if (validatePassword(password)) {
-      pwUpFeedback.textContent = '';
-    } else {
-      if (!/[a-z]/.test(password)) {
-        // no lower case letters
-        pwUpFeedback.textContent =
-          "Bitte geben Sie auch kleine Buchstaben ein.";
-      } else if (!/[A-Z]/.test(password)) {
-        // no higer case letters
-        pwUpFeedback.textContent = "Bitte geben Sie auch große Buchstaben ein.";
-      } else if (!/[0-9]/.test(password)) {
-        // no numbers
-        pwUpFeedback.textContent = "Bitte geben Sie auch Ziffern ein.";
-      } else if (password.length <= 5) {
-        // to short
-        pwUpFeedback.textContent = "Das Passwort ist zu kurz.";
-      } else {
-        // unknown error
-        pwUpFeedback.textContent =
-          "Es ist ein unbekannter Fehler aufgetreten, versuchen Sie es später erneut.";
-      }
-      isValid = false;
-    }
-
-    if (isValid) {
-      const promise = firebase.auth().createUserWithEmailAndPassword(email, password);
-
-      promise.catch((error) => {
-        const errorMsg = error.message;
-        const messages = [
-          { message: 'The password is invalid or the user does not have a password.', feedback: 'Das eingegebene Passwort ist ungültig.', affected: 'pw' },
-          { message: 'Too many unsuccessful login attempts.  Please include reCaptcha verification or try again later', feedback: 'Der Anmelde Vorgang ist zu oft fehlgeschlagen, versuchen Sie es später ernuet.', affected: '' },
-          { message: 'There is no user record corresponding to this identifier. The user may have been deleted.', feedback: 'Es wurde keine Account mit der eingegebenen E-Mail Adresse gefunden.', affected: 'em' },
-          { message: 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.', feedback: 'Zeitüberschreitung beim Anmelden. Versuche Sie es später erneut.', affected: '' },
-          { message: 'The email address is already in use by another account.', feedback: 'Die angebene E-Mail Adresse wird bereits verwendet.', affected: 'em' },
-        ];
-
-        for (const msg of messages) {
-          if (msg.message === errorMsg) {
-            if (msg.affected === 'em') {
-              emUpFeedback.textContent = msg.feedback;
-            } else if (msg.affected === 'pw') {
-              pwUpFeedback.textContent = msg.feedback;
-            }
-          }
-        }
-      })
-
-      promise.then(() => {
-        firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
-          email: firebase.auth().currentUser.email
-      });
-      })
-    }
-  })
-
-  signInBtn.addEventListener('click', () => {
-    const email = document.getElementById("emailIn").value;
-    const password = document.getElementById("passwordIn").value;
-    const emInFeedback = document.getElementById("emInFeedback");
-    const pwInFeedback = document.getElementById("pwInFeedback");
-    let isValid = true;
-
-    if (email === "" || email === " ") {
-      // email value is empty
-      emInFeedback.textContent = "Bitte geben Sie eine E-Mail Adresse ein.";
-      isValid = false;
-    } else if (validateEmail(email)) {
-      // email is valid
-      emInFeedback.textContent = "";
-    } else {
-      // email is invalid
-      emInFeedback.textContent = "Ungültige E-Mail Adresse.";
-      isValid = false;
-    }
-
-    if (password === "" || password === " ") {
-      // password value is empty
-      pwInFeedback.textContent = "Bitte geben Sie ein Passwort ein.";
-      isValid = false;
-    } else {
-      // password is valid
-      pwInFeedback.textContent = "";
-    }
-
-    if (isValid) {
-      const promise = firebase.auth().signInWithEmailAndPassword(email, password);
-
-      promise.catch((error) => {
-        const errorMsg = error.message;
-        const messages = [
-          {message: 'There is no user record corresponding to this identifier. The user may have been deleted.', feedback: 'Die eingegebene Email-Adresse wurde nicht gefunden', affected: 'em'},
-          {message: 'The password is invalid or the user does not have a password.', feedback: 'Das eingegebene Passwort ist ungültig.', affected: 'pw'},
-          {message: 'Too many unsuccessful login attempts.  Please include reCaptcha verification or try again later', feedback: 'Der Anmelde Vorgang ist zu oft fehlgeschlagen, versuchen Sie es später ernuet.', affected: ''},
-          {message: 'There is no user record corresponding to this identifier. The user may have been deleted.', feedback: 'Es wurde keine Account mit der eingegebenen E-Mail Adresse gefunden.', affected: 'em'},
-          {message: 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.', feedback: 'Zeitüberschreitung beim Anmelden. Versuche Sie es später erneut.', affected: ''},
-          {message: 'The email address is already in use by another account.', feedback: 'Die angebene E-Mail Adresse wird bereits verwendet.', affected: 'em'},
-      ];
-      for (const msg of messages) {
-        if (msg.message === errorMsg) {
-            if (msg.affected === 'em') {
-                emInFeedback.textContent = msg.feedback;
-            } else if (msg.affected === 'pw') {
-                pwInFeedback.textContent = msg.feedback;
-            }
-        }
-    }
-      });
-
-      promise.then(() => {
-      })
-    }
-  })
+  
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -197,21 +27,52 @@ window.addEventListener("load", () => {
 
 
       const storage = firebase.storage();
-    
-      // let sounds = getItemsFromDatabase(storageRef);
-      // console.log(storageRef.listAll());
-
       let sounds = []
       let allSounds = {};
       let audios = {};
       let representSounds = document.getElementById('representSounds');
-      loadSounds.addEventListener('click', () => {
-        // loadSounds.style.display = 'none';
+
+      let allFolders = {};
+      let nameOfStorage = {};
+      let storageReference = storage.ref();
+
+      storageReference.listAll().then(res => {
+        res.prefixes.forEach(element => {
+          nameOfStorage[element.fullPath] = element;
+          let storageRef = storage.ref().child(element.fullPath)
+          getItemsFromDatabase(storage, storageRef, sounds, element.fullPath);
+          allFolders[element.fullPath] = element.fullPath;
+          // loadSounds(representSounds,)
+        });
+        console.log(allFolders);
+        // createButtonToLoad(representSounds, allFolders, )
+      });
+      
+      // let sounds = getItemsFromDatabase(storageRef);
+      // console.log(storage.ref().child().fullPath());
+      // const storageRef = storage.ref().child('basicSounds');
+      
+      
+      // console.log(nameOfStorage.length)
+      
+      // nameOfStorage.forEach(element => {
+        //   var storageRef = storage.ref().child(element)
+        //   getItemsFromDatabase(storage, storageRef, sounds);
+        // });
         
-          const storageRef = storage.ref().child('basicSounds');
-          getItemsFromDatabase(storage, storageRef, sounds);
-          
+        
+        loadSounds.addEventListener('click', () => {
           pleasePlay(sounds, allSounds, audios, representSounds);
+          // loadSounds.style.display = 'none';
+        // for (let [title, url] of Object.entries(nameOfStorage)) {
+        //   storageRefForAll[title] = storage.ref().child(url.fullPath)
+        //   getItemsFromDatabase(storage, storageRef, sounds);
+        //   console.log("hi")
+        // }
+        // console.log(storageRefForAll)
+        
+        
+        
           // console.log(sounds.length);
           // createbutton(audios, representSounds);
         // }
@@ -230,6 +91,7 @@ window.addEventListener("load", () => {
       
       representSounds.addEventListener('click', (event) => {
         playSound(audios, event);
+        console.log(sounds);
         
       })
       // console.log(user.providerData[0].providerId);
@@ -244,15 +106,101 @@ window.addEventListener("load", () => {
       // console.log(user.providerData[0].providerId);
     }
   });
-
+});
   
-  signOut.addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-    }).catch((error) => {
+  
+function getItemsFromDatabase(storage, storageRef, sounds, path) {
+  // let sounds = [];
+  storageRef.listAll().then(res => {
+    res.items.forEach(itemRef => {
+      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
+        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
+        if (name.includes('WWM-')) {
+          name = name.split('WWM-')[1];
+        }
+        sounds.push({
+          name: name,
+          soundURL: url,
+          fullPath: itemRef.fullPath,
+          // id: itemRef.fullPath.split('sound')[1].split('_')[0]
+          path: path
+        });
+        // console.log(res);
+      }).catch(err => {
+          console.error(err);
+      });
     });
   })
+  // return sounds;
+  // console.log(sounds.length);
+  // console.log("hi");
+}
 
+function pleasePlay(sounds, allSounds, audios, representSounds) {
+  // sounds.forEach(element => {
+  //   console.log(element);
+  // });
+  // let allSounds = {};
+  sounds = sounds.sort(GetSortOrder('id'));
+    
+  // console.log(sounds);
+  for (let i = 0; i < sounds.length; i++) {
+    allSounds[sounds[i].name] = sounds[i].soundURL;
+    // console.log(allSounds);
+  }
 
+  // console.log(allSounds);
+  for (let [title, url] of Object.entries(allSounds)) {
+    audios[title] = new Audio(url);
+  }
+
+  representSounds.textContent = '';
+  for (let title of Object.keys(audios)) {
+    let newSound = document.createElement("p");
+    newSound.setAttribute("class", "soundsToPlay"); 
+    newSound.textContent = title;
+    const color = getRandomColor();
+    newSound.style.backgroundColor = color;
+    newSound.style.border = `2px solid ${color}`;
+    newSound.dataset["audio"] = title;
+    representSounds.appendChild(newSound);
+  }
+  
+}
+
+function playSound(audios, event) {
+  let audio = audios[event.target.dataset["audio"]];
+  // console.log(audio);
+  // console.log(audios)
+  if (audio) {
+    for (let audio of Object.values(audios)) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    audio.play();
+    
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    if (navigator.vibrate) {
+      navigator.vibrate([50]);
+    }
+  }
+}
+
+function GetSortOrder(sortetArr) {    
+  return function(a, b) {    
+      if (a[sortetArr] > b[sortetArr]) {    
+          return 1;    
+      } else if (a[sortetArr] < b[sortetArr]) {    
+          return -1;    
+      }    
+      return 0;    
+  }    
+}
+
+function getRandomColor() {
+  const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
+  return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
+}
   
   // console.log(numberOfItems);
   // sounds.forEach(item => {
@@ -303,65 +251,9 @@ window.addEventListener("load", () => {
     
   // }
   
-});
 
-function getItemsFromDatabase(storage, storageRef, sounds) {
-  // let sounds = [];
-  storageRef.listAll().then(res => {
-    res.items.forEach(itemRef => {
-      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-        if (name.includes('WWM-')) {
-          name = name.split('WWM-')[1];
-        }
-        sounds.push({
-          name: name,
-          soundURL: url,
-          fullPath: itemRef.fullPath,
-          id: itemRef.fullPath.split('sound')[1].split('_')[0]
-        });
-        // console.log(res);
-      }).catch(err => {
-          console.error(err);
-      });
-    });
-  })
-  // return sounds;
-  // console.log(sounds.length);
-  // console.log("hi");
-}
 
-function pleasePlay(sounds, allSounds, audios, representSounds) {
-  // sounds.forEach(element => {
-  //   console.log(element);
-  // });
-  // let allSounds = {};
-  sounds = sounds.sort(GetSortOrder('id'));
-    
-  // console.log(sounds);
-  for (let i = 0; i < sounds.length; i++) {
-    allSounds[sounds[i].name] = sounds[i].soundURL;
-    // console.log(allSounds);
-  }
 
-  // console.log(allSounds);
-  for (let [title, url] of Object.entries(allSounds)) {
-    audios[title] = new Audio(url);
-  }
-
-  representSounds.textContent = '';
-  for (let title of Object.keys(audios)) {
-    let newSound = document.createElement("p");
-    newSound.setAttribute("class", "soundsToPlay"); 
-    newSound.textContent = title;
-    const color = getRandomColor();
-    newSound.style.backgroundColor = color;
-    newSound.style.border = `2px solid ${color}`;
-    newSound.dataset["audio"] = title;
-    representSounds.appendChild(newSound);
-  }
-  
-}
 
 // function loadAudio(allSounds, audios) {
 //   // let audios = {};
@@ -379,24 +271,7 @@ function pleasePlay(sounds, allSounds, audios, representSounds) {
 //   console.log("hi4");
 // }
 
-function playSound(audios, event) {
-  let audio = audios[event.target.dataset["audio"]];
-  // console.log(audio);
-  // console.log(audios)
-  if (audio) {
-    for (let audio of Object.values(audios)) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    audio.play();
-    
-    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-    if (navigator.vibrate) {
-      navigator.vibrate([50]);
-    }
-  }
-  // console.log("hi5");
-}
+
 
 // function getAllSounds(sounds) {
 //   sounds.forEach(element => {
@@ -412,44 +287,9 @@ function playSound(audios, event) {
   
 //   return allSounds;
 // }
-function validatePassword(password) {
-  return (
-    /[a-z]/.test(password) &&
-    /[A-Z]/.test(password) &&
-    /[0-9]/.test(password) &&
-    password.length > 5
-  );
-}
 
-function validateEmail(email) {
-  if (email.includes("@")) {
-    const splitEmail = email.split("@");
-    return (
-      splitEmail.length === 2 &&
-      splitEmail[1].split(".").length === 2 &&
-      splitEmail[1].split(".")[1].length >= 2 &&
-      splitEmail[1].split(".")[0].length >= 3
-    );
-  } else {
-    return false;
-  }
-}
 
-function GetSortOrder(sortetArr) {    
-  return function(a, b) {    
-      if (a[sortetArr] > b[sortetArr]) {    
-          return 1;    
-      } else if (a[sortetArr] < b[sortetArr]) {    
-          return -1;    
-      }    
-      return 0;    
-  }    
-}
 
-function getRandomColor() {
-  const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
-  return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
-}
 
 // function representSounds(sounds) {
 //   let sortSounds = [];
