@@ -136,12 +136,12 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
   // console.log("hi");
 }
 // let audio2 = {};
-function pleasePlay(sounds, allSounds, audios, divAfter, title) {
+function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2) {
   // sounds.forEach(element => {
   //   console.log(element);
   // });
   // let allSounds = {};
-  sounds = sounds.sort(GetSortOrder('id'));
+  // sounds = sounds.sort(GetSortOrder('id'));
   
     
   // });
@@ -149,35 +149,40 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title) {
   // allSounds.forEach(element => {
   //   if(element.path === title) {}
   // });
-  // allSounds = {};
-  // audios = {};
+  allSounds = {};
   // console.log(allSounds + ', ' + audios);
   for (let i = 0; i < sounds.length; i++) {
     if (sounds[i].path === title) 
       allSounds[sounds[i].name] = sounds[i].soundURL; 
+    
+    
   //   else
   //     console.log('hi');
   }
-
-  console.log(allSounds);
+  // console.log(allSounds);
   // console.log(allSounds);
   for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
+    audios2[title] = new Audio(url);
     // audio2[title] = new Audio(url)
+     
   }
-  console.log(audios);
+  
+
 
   divAfter.textContent = '';
-  for (let title of Object.keys(audios)) {
-    let newSound = document.createElement("p");
-    newSound.setAttribute("class", "soundsToPlay"); 
-    newSound.textContent = title;
+  for (let title of Object.keys(audios2)) {
+    var newSound = document.createElement("p");
+    newSound.setAttribute("class", "soundsToPlay");
     const color = getRandomColor();
     newSound.style.backgroundColor = color;
     newSound.style.border = `2px solid ${color}`;
+    newSound.textContent = title;
     newSound.dataset["audio"] = title;
     divAfter.appendChild(newSound);
+
   }
+  // console.log(audios);
   
 }
 
@@ -196,7 +201,8 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
     representSounds.appendChild(divAfter)
 
     loadSound.addEventListener('click', () => {
-      pleasePlay(sounds, allSounds, audios, divAfter, title)
+      let audios2 = {}; 
+      pleasePlay(sounds, allSounds, audios, divAfter, title, audios2)
     })
   }
   
