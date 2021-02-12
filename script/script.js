@@ -45,7 +45,7 @@ window.addEventListener("load", () => {
           // loadSounds(representSounds,)
         });
         console.log(allFolders);
-        // createButtonToLoad(representSounds, allFolders, )
+        createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios)
       });
       
       // let sounds = getItemsFromDatabase(storageRef);
@@ -61,8 +61,8 @@ window.addEventListener("load", () => {
         // });
         
         
-        loadSounds.addEventListener('click', () => {
-          pleasePlay(sounds, allSounds, audios, representSounds);
+        // loadSounds.addEventListener('click', () => {
+          // pleasePlay(sounds, allSounds, audios, representSounds);
           // loadSounds.style.display = 'none';
         // for (let [title, url] of Object.entries(nameOfStorage)) {
         //   storageRefForAll[title] = storage.ref().child(url.fullPath)
@@ -87,7 +87,7 @@ window.addEventListener("load", () => {
         // }
         
         // console.log(representSounds)
-      }) 
+      // }) 
       
       representSounds.addEventListener('click', (event) => {
         playSound(audios, event);
@@ -136,19 +136,30 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
   // console.log("hi");
 }
 
-function pleasePlay(sounds, allSounds, audios, representSounds) {
+function pleasePlay(sounds, allSounds, audios, representSounds, title) {
   // sounds.forEach(element => {
   //   console.log(element);
   // });
   // let allSounds = {};
   sounds = sounds.sort(GetSortOrder('id'));
+  
     
+  // });
   // console.log(sounds);
+  // allSounds.forEach(element => {
+  //   if(element.path === title) {}
+  // });
+  allSounds = {};
+  audios = {};
+  // console.log(allSounds + ', ' + audios);
   for (let i = 0; i < sounds.length; i++) {
-    allSounds[sounds[i].name] = sounds[i].soundURL;
-    // console.log(allSounds);
+    if (sounds[i].path === title) 
+      allSounds[sounds[i].name] = sounds[i].soundURL; 
+    else
+      console.log('hi');
   }
 
+  console.log(allSounds);
   // console.log(allSounds);
   for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
@@ -167,6 +178,28 @@ function pleasePlay(sounds, allSounds, audios, representSounds) {
   }
   
 }
+
+function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios) {
+  // representSounds.textContent = '';
+  // console.log(sounds[1].path);
+  for (let title of Object.keys(allFolders)) {
+    let loadSound = document.createElement("button");
+    let divAfter = document.createElement("div");
+    loadSound.textContent = `Load ${title} Folder`;
+    loadSound.setAttribute("class", title); 
+    divAfter.setAttribute("class", title); 
+    // divAfter.textContent = "HALDSJDFJS"
+    // console.log(allFolders.length);
+    representSounds.appendChild(loadSound);
+    representSounds.appendChild(divAfter)
+
+    loadSound.addEventListener('click', () => {
+      pleasePlay(sounds, allSounds, audios, divAfter, title)
+    })
+  }
+  
+}
+
 
 function playSound(audios, event) {
   let audio = audios[event.target.dataset["audio"]];
