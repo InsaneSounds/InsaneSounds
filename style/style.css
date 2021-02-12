@@ -1,10 +1,10 @@
-/* body {
+body {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* flex-direction: column;
+    align-items: center; */
 
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1.2em;
@@ -17,7 +17,7 @@
 
 #soundboardWrapper {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     text-align: center;
     align-items: center;
@@ -30,19 +30,23 @@
 }
 
 #signInWrapper {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 #signUpWrapper {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-#loadSounds {
+
+#footer {
+    display: none;
+}
+/* #loadSounds {
     min-width: 15vw;
     min-height: 7vh;
     display: flex;
@@ -55,25 +59,55 @@
     padding: 0 10px;
     font-weight: bold;
     letter-spacing: 1px;
-}
+}  */
 
 #representSounds {
     display: flex;
     flex-wrap: wrap;
-    min-width: 80vw;
-    min-height: 10vh;
+    /* min-width: 80vw;
+    min-height: 10vh; */
     justify-content: center;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
 
 }
 
+#representSounds div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    /* background-color: black; */
+}
+
+#representSounds .loadButton {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+    min-width: 20vw;
+    min-height: 4vw;
+
+    margin: 2vh 1.5vw;
+    padding: 0 10px;
+
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    
+    border: 2px solid black;
+    border-radius: 5px;
+    /* box-shadow: 2px 5px 7px 0px rgb(133, 127, 127); */
+}
 .soundsToPlay {
     display: flex;
     
     justify-content: center;
     align-items: center;
-    text-align: center;
+    /* text-align: center; */
     min-width: 20vw;
     min-height: 4vw;
 
@@ -87,7 +121,7 @@
     
     border-radius: 10px;
     box-shadow: 2px 5px 7px 0px rgb(133, 127, 127);
-} */
+}
 
 
 /* @media screen and (max-width:1024px) {

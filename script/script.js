@@ -90,87 +90,53 @@ window.addEventListener("load", () => {
       // }) 
       
       representSounds.addEventListener('click', (event) => {
-        playSound(sounds, audios, event);
-        // console.log(sounds);
+        playSound(audios, event);
         
       })
-      // console.log(user.providerData[0].providerId);
-      
-
-      // loadSounds.addEventListener('click', () => {
-      //   loadSounds.style.display = 'none';
-      //   representSounds(sounds);
-      // })  
     } else {
       console.log('signed Out');
-      // console.log(user.providerData[0].providerId);
     }
   });
 });
   
   
 function getItemsFromDatabase(storage, storageRef, sounds, path) {
-  // let sounds = [];
   storageRef.listAll().then(res => {
     res.items.forEach(itemRef => {
       storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
         let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-        // if (name.includes('WWM-')) {
-        //   name = name.split('WWM-')[1];
-        // }
+        if (name.includes('WWM-')) {
+          name = name.split('WWM-')[1];
+        }
         sounds.push({
           name: name,
           soundURL: url,
           fullPath: itemRef.fullPath,
-          // id: itemRef.fullPath.split('sound')[1].split('_')[0]
+          id: itemRef.fullPath.split('sound')[1].split('_')[0],
           path: path
         });
-        // console.log(path);
       }).catch(err => {
           console.error(err);
       });
     });
   })
-  // return sounds;
-  // console.log(sounds);
-  // console.log("hi");
 }
-// let audio2 = {};
 function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2) {
-  // sounds.forEach(element => {
-  //   console.log(element);
-  // });
-  // let allSounds = {};
-  // sounds = sounds.sort(GetSortOrder('id'));
-  
-    
-  // });
-  // console.log(sounds);
-  // allSounds.forEach(element => {
-  //   if(element.path === title) {}
-  // });
   allSounds = {};
-  // console.log(allSounds + ', ' + audios);
+  divAfter.textContent = '';
+  sounds = sounds.sort(GetSortOrder('id'));
+
+  
   for (let i = 0; i < sounds.length; i++) {
     if (sounds[i].path === title) 
       allSounds[sounds[i].name] = sounds[i].soundURL; 
-    
-    
-  //   else
-  //     console.log('hi');
   }
-  // console.log(allSounds);
-  // console.log(allSounds);
+
   for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
     audios2[title] = new Audio(url);
-    // audio2[title] = new Audio(url)
-     
   }
-  
 
-
-  divAfter.textContent = '';
   for (let title of Object.keys(audios2)) {
     var newSound = document.createElement("p");
     newSound.setAttribute("class", "soundsToPlay");
@@ -180,23 +146,20 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2) {
     newSound.textContent = title;
     newSound.dataset["audio"] = title;
     divAfter.appendChild(newSound);
-
   }
-  // console.log(audios);
-  
 }
 
 function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios) {
-  // representSounds.textContent = '';
-  // console.log(sounds[1].path);
+  representSounds.textContent = '';
   for (let title of Object.keys(allFolders)) {
-    let loadSound = document.createElement("button");
+    let loadSound = document.createElement("p");
     let divAfter = document.createElement("div");
-    loadSound.textContent = `Load ${title} Folder`;
-    loadSound.setAttribute("class", title); 
-    divAfter.setAttribute("class", title); 
-    // divAfter.textContent = "HALDSJDFJS"
-    // console.log(allFolders.length);
+    loadSound.textContent = `Load ${title}`;
+
+    // vll ein Attribut vergeben --> aber selber name für alle
+    loadSound.setAttribute("class", "loadButton"); 
+    divAfter.setAttribute("class", title);
+
     representSounds.appendChild(loadSound);
     representSounds.appendChild(divAfter)
 
@@ -209,14 +172,8 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
 }
 
 
-function playSound(sounds, audios, event) {
-
-  // for (let i = 0; i < sounds.length; i++) {
-  //   if (sounds[i].path ===)
-  // }
+function playSound(audios, event) {
   let audio = audios[event.target.dataset["audio"]];
-  // console.log(audio);
-  // console.log(audios)
   if (audio) {
     for (let audio of Object.values(audios)) {
       audio.pause();
