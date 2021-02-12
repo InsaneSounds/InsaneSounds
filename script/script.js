@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
           allFolders[element.fullPath] = element.fullPath;
           // loadSounds(representSounds,)
         });
-        console.log(allFolders);
+        // console.log(allFolders);
         createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios)
       });
       
@@ -90,8 +90,8 @@ window.addEventListener("load", () => {
       // }) 
       
       representSounds.addEventListener('click', (event) => {
-        playSound(audios, event);
-        console.log(sounds);
+        playSound(sounds, audios, event);
+        // console.log(sounds);
         
       })
       // console.log(user.providerData[0].providerId);
@@ -115,9 +115,9 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
     res.items.forEach(itemRef => {
       storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
         let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-        if (name.includes('WWM-')) {
-          name = name.split('WWM-')[1];
-        }
+        // if (name.includes('WWM-')) {
+        //   name = name.split('WWM-')[1];
+        // }
         sounds.push({
           name: name,
           soundURL: url,
@@ -125,18 +125,18 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
           // id: itemRef.fullPath.split('sound')[1].split('_')[0]
           path: path
         });
-        // console.log(res);
+        // console.log(path);
       }).catch(err => {
           console.error(err);
       });
     });
   })
   // return sounds;
-  // console.log(sounds.length);
+  // console.log(sounds);
   // console.log("hi");
 }
-
-function pleasePlay(sounds, allSounds, audios, representSounds, title) {
+// let audio2 = {};
+function pleasePlay(sounds, allSounds, audios, divAfter, title) {
   // sounds.forEach(element => {
   //   console.log(element);
   // });
@@ -149,23 +149,25 @@ function pleasePlay(sounds, allSounds, audios, representSounds, title) {
   // allSounds.forEach(element => {
   //   if(element.path === title) {}
   // });
-  allSounds = {};
-  audios = {};
+  // allSounds = {};
+  // audios = {};
   // console.log(allSounds + ', ' + audios);
   for (let i = 0; i < sounds.length; i++) {
     if (sounds[i].path === title) 
       allSounds[sounds[i].name] = sounds[i].soundURL; 
-    else
-      console.log('hi');
+  //   else
+  //     console.log('hi');
   }
 
   console.log(allSounds);
   // console.log(allSounds);
   for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
+    // audio2[title] = new Audio(url)
   }
+  console.log(audios);
 
-  representSounds.textContent = '';
+  divAfter.textContent = '';
   for (let title of Object.keys(audios)) {
     let newSound = document.createElement("p");
     newSound.setAttribute("class", "soundsToPlay"); 
@@ -174,7 +176,7 @@ function pleasePlay(sounds, allSounds, audios, representSounds, title) {
     newSound.style.backgroundColor = color;
     newSound.style.border = `2px solid ${color}`;
     newSound.dataset["audio"] = title;
-    representSounds.appendChild(newSound);
+    divAfter.appendChild(newSound);
   }
   
 }
@@ -201,7 +203,11 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
 }
 
 
-function playSound(audios, event) {
+function playSound(sounds, audios, event) {
+
+  // for (let i = 0; i < sounds.length; i++) {
+  //   if (sounds[i].path ===)
+  // }
   let audio = audios[event.target.dataset["audio"]];
   // console.log(audio);
   // console.log(audios)
