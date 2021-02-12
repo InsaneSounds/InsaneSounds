@@ -104,15 +104,16 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
   storageRef.listAll().then(res => {
     res.items.forEach(itemRef => {
       storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-        let name = itemRef.fullPath.split('/')[1].split('_')[1].split('.')[0];
-        if (name.includes('WWM-')) {
-          name = name.split('WWM-')[1];
-        }
+        let name = itemRef.fullPath.split('/')[1].split('.')[0];
+        // .split('_')[1]
+        // if (name.includes('WWM-')) {
+        //   name = name.split('WWM-')[1];
+        // }
         sounds.push({
           name: name,
           soundURL: url,
           fullPath: itemRef.fullPath,
-          id: itemRef.fullPath.split('sound')[1].split('_')[0],
+          // id: itemRef.fullPath.split('sound')[1].split('_')[0],
           path: path
         });
       }).catch(err => {
@@ -124,7 +125,7 @@ function getItemsFromDatabase(storage, storageRef, sounds, path) {
 function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2) {
   allSounds = {};
   divAfter.textContent = '';
-  sounds = sounds.sort(GetSortOrder('id'));
+  // sounds = sounds.sort(GetSortOrder('id'));
 
   
   for (let i = 0; i < sounds.length; i++) {
