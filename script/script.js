@@ -153,19 +153,35 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
   representSounds.textContent = '';
   for (let title of Object.keys(allFolders)) {
     let loadSound = document.createElement("p");
+    let removeSound = document.createElement("p");
     let divAfter = document.createElement("div");
+
     loadSound.textContent = `Load ${title}`;
+    removeSound.textContent = `Undisplay ${title}`;
 
     // vll ein Attribut vergeben --> aber selber name für alle
     loadSound.setAttribute("class", "loadButton"); 
+    loadSound.setAttribute("id", `${title}Btn`); 
+    // removeSound.setAttribute("class", "loadButton"); 
+    removeSound.setAttribute("class", "undisplayBtn"); 
     divAfter.setAttribute("class", title);
 
     representSounds.appendChild(loadSound);
+    representSounds.appendChild(removeSound);
     representSounds.appendChild(divAfter)
 
     loadSound.addEventListener('click', () => {
       let audios2 = {}; 
       pleasePlay(sounds, allSounds, audios, divAfter, title, audios2)
+      divAfter.style.display = 'flex';
+      loadSound.style.display = 'none';
+      removeSound.style.display = 'flex';
+    })
+
+    removeSound.addEventListener('click', () => {
+      divAfter.style.display = 'none';
+      loadSound.style.display = 'flex';
+      removeSound.style.display = 'none';
     })
   }
   
