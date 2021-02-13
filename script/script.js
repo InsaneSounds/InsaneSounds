@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
   // // Initialize Firebase
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
-
+  
   
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -31,6 +31,8 @@ window.addEventListener("load", () => {
       let allSounds = {};
       let audios = {};
       let representSounds = document.getElementById('representSounds');
+      const uploadFiles = document.getElementById('uploadFiles');
+      const uploadWrapper = document.getElementById('uploadWrapper');
 
       let allFolders = {};
       let nameOfStorage = {};
@@ -45,7 +47,8 @@ window.addEventListener("load", () => {
           // loadSounds(representSounds,)
         });
         // console.log(allFolders);
-        createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios)
+        createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios);
+        selectFolder(uploadWrapper, allFolders);
       });
       
       // let sounds = getItemsFromDatabase(storageRef);
@@ -91,7 +94,18 @@ window.addEventListener("load", () => {
       
       representSounds.addEventListener('click', (event) => {
         playSound(audios, event);
-        
+      })
+      
+      uploadFiles.addEventListener('click', () => {
+        const files = document.getElementById('files').files;
+        let fragmente = [];
+        for (let i = 0, f; f = files[i]; i++) {
+          fragmente.push({
+            fileName: f.name
+          })
+        }
+        // console.log(files);
+        // console.log(fragmente);
       })
     } else {
       console.log('signed Out');
@@ -99,6 +113,23 @@ window.addEventListener("load", () => {
   });
 });
   
+function selectFolder(uploadWrapper, allFolders) {
+  console.log(allFolders);
+  let select = document.createElement("select");
+  select.setAttribute("class", "select")
+  uploadWrapper.appendChild(select);
+  for (let title of Object.keys(allFolders)) {
+    let option = document.createElement("option");
+    // newSound.setAttribute("class", "soundsToPlay");
+    // const color = getRandomColor();
+    // newSound.style.backgroundColor = color;
+    // newSound.style.border = `2px solid ${color}`;
+    option.textContent = title;
+    // newSound.dataset["audio"] = title;
+    select.appendChild(option);
+  }
+  
+}
   
 function getItemsFromDatabase(storage, storageRef, sounds, path) {
   storageRef.listAll().then(res => {

@@ -3,8 +3,8 @@ body {
     min-height: 100vh;
 
     display: flex;
-    /* flex-direction: column;
-    align-items: center; */
+    flex-direction: column;
+    /* align-items: center; */
 
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1.2em;
@@ -17,7 +17,7 @@ body {
 
 #soundboardWrapper {
     width: 100vw;
-    min-height: 100vh;
+    min-height: 30vh;
     display: flex;
     text-align: center;
     align-items: center;
@@ -25,26 +25,32 @@ body {
     flex-direction: column;
 }
 
-#soundboardWrapper h1 {
-    width: 100vw;
+#uploadWrapper {
+    display: none;
 }
 
+/* #soundboardWrapper h1 {
+    width: 100vw;
+} */
+
 #signInWrapper {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 #signUpWrapper {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 #footer {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* #loadSounds {
     min-width: 15vw;
