@@ -45,9 +45,32 @@
     </section>
 
     <section id="uploadWrapper">
-      <input type="file" id="files" accept="audio/*" multiple>
-      <button id="uploadFiles">Upload Files</button>
+      <div>
+        <input type="file" id="files" accept="audio/*" multiple>
+        <p id="fileFeedback"></p>
+        <!-- <div id="choseFolder"> -->
+          <!-- <div id="existingFolder">
+          </div> -->
+        <input type="text" readonly id="choosedFolder" placeholder="Ordner auswählen">
+        <p id="folderNameFeedback"></p>
+        
+        <!-- </div> -->
+        <button id="uploadFiles">Upload Files</button>
+      </div>
+
+      <div id="chooseFolderBox">
+        <div id="popUpBox">
+          <i class="fas fa-times" id="closePopUpBox"></i>
+          <div id="existingFolders"></div>
+          <input type="text" name="newFolderName" id="newFolderName">
+          <p id="newFolderNameFeedback"></p>
+          <button id="choseNewFolder">Auswählen</button>
+        </div>
+      </div>
+      <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     </section>
+
+    <!-- <i class="fas fa-times"></i> -->
 
     <section id="signUpWrapper">
       <h1>Registrieren</h1>
@@ -87,9 +110,91 @@
     
     <footer id="footer">
       <i class="fas fa-sign-out-alt" id="signOut"></i>
-      <i class='fas fa-user' id='userIcon'></i>
+      <i class="fas fa-trash" id="deleteSoundsBtn"></i>
+      <!-- <i class='fas fa-user' id='userIcon'></i>
       <i class="fas fa-clipboard-list" id="entries"></i>
-      <i class="fas fa-plus" id="plus"></i>
+      <i class="fas fa-plus" id="plus"></i> -->
     </footer>
   </body>
 </html>
+
+<!-- <html>
+
+<title>
+Testseite  CSS Popup
+</title>
+
+<style>
+.modal-window {
+  position: fixed;
+  background-color: rgba(200, 200, 200, 0.75);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.modal-window:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-window>div {
+  width: 400px;
+  position: relative;
+  margin: 10% auto;
+  padding: 2rem;
+  background: #fff;
+  color: #444;
+}
+
+.modal-window header {
+  font-weight: bold;
+}
+
+.modal-close {
+  color: #aaa;
+  line-height: 50px;
+  font-size: 120%;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 70px;
+  text-decoration: none;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+.modal-window h1 {
+  font-size: 200%;
+  margin: 0 0 15px;
+}
+</style>
+
+
+
+
+<body>
+
+<font size=5>
+<a href="#open-modal">Hier klicken</a>
+</font>
+<div id="open-modal" class="modal-window">
+  <div>
+    <a href="#modal-close" title="Close" class="modal-close">close &times;</a>
+    <h1>Testseite</h1>
+    <div>Das ist eine Testseite</div>
+  </div>
+</div>
+</body>
+
+</html> -->
