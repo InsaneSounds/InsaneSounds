@@ -17,89 +17,85 @@ window.addEventListener("load", () => {
   // // Initialize Firebase
   // firebase.initializeApp(firebaseConfig);
   // firebase.analytics();
-  
-  
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       const uid = user.uid;
       console.log(uid);
 
-      
-      
-
-
       const storage = firebase.storage();
-      let sounds = []
+      let sounds = [];
       let allSounds = {};
       let audios = {};
-      let representSounds = document.getElementById('representSounds');
-      const uploadFiles = document.getElementById('uploadFiles');
-      const existingFolders = document.getElementById('existingFolders');
+      let representSounds = document.getElementById("representSounds");
+      const uploadFiles = document.getElementById("uploadFiles");
+      const existingFolders = document.getElementById("existingFolders");
 
       let allFolders = {};
       let nameOfStorage = {};
       let storageReference = storage.ref();
       let storageRef;
-      storageReference.listAll().then(res => {
+      storageReference.listAll().then((res) => {
         // console.log('storageReference');
-        res.prefixes.forEach(element => {
+        res.prefixes.forEach((element) => {
           nameOfStorage[element.fullPath] = element;
-          storageRef = storageReference.child(element.fullPath)
+          storageRef = storageReference.child(element.fullPath);
           getItemsFromDatabase(storage, storageRef, sounds, element.fullPath);
           allFolders[element.fullPath] = element.fullPath;
           // loadSounds(representSounds,)
         });
         // console.log(storageRef);
-        createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios, storageReference);
+        createButtonToLoad(
+          representSounds,
+          allFolders,
+          sounds,
+          allSounds,
+          audios,
+          storageReference
+        );
         selectFolder(existingFolders, allFolders);
         // console.log(sounds.length);
       });
 
       // console.log(sounds.length);
-      
+
       // let sounds = getItemsFromDatabase(storageRef);
       // console.log(storage.ref().child().fullPath());
       // const storageRef = storage.ref().child('basicSounds');
-      
-      
+
       // console.log(nameOfStorage.length)
-      
+
       // nameOfStorage.forEach(element => {
-        //   var storageRef = storage.ref().child(element)
-        //   getItemsFromDatabase(storage, storageRef, sounds);
-        // });
-        
-        
-        // loadSounds.addEventListener('click', () => {
-          // pleasePlay(sounds, allSounds, audios, representSounds);
-          // loadSounds.style.display = 'none';
-        // for (let [title, url] of Object.entries(nameOfStorage)) {
-        //   storageRefForAll[title] = storage.ref().child(url.fullPath)
-        //   getItemsFromDatabase(storage, storageRef, sounds);
-        //   console.log("hi")
-        // }
-        // console.log(storageRefForAll)
-        
-        
-        
-          // console.log(sounds.length);
-          // createbutton(audios, representSounds);
-        // }
-        // console.log(representSounds);
-        
-        
-        // loadAudio(allSounds, );
-        // console.log(audios);
-        // if (sounds.length === 0) {
-        //   pleasePlay(sounds, allSounds, audios, representSounds);
-        //   createbutton(audios, representSounds);
-        // }
-        
-        // console.log(representSounds)
-      // }) 
-      
-      representSounds.addEventListener('click', (event) => {
+      //   var storageRef = storage.ref().child(element)
+      //   getItemsFromDatabase(storage, storageRef, sounds);
+      // });
+
+      // loadSounds.addEventListener('click', () => {
+      // pleasePlay(sounds, allSounds, audios, representSounds);
+      // loadSounds.style.display = 'none';
+      // for (let [title, url] of Object.entries(nameOfStorage)) {
+      //   storageRefForAll[title] = storage.ref().child(url.fullPath)
+      //   getItemsFromDatabase(storage, storageRef, sounds);
+      //   console.log("hi")
+      // }
+      // console.log(storageRefForAll)
+
+      // console.log(sounds.length);
+      // createbutton(audios, representSounds);
+      // }
+      // console.log(representSounds);
+
+      // loadAudio(allSounds, );
+      // console.log(audios);
+      // if (sounds.length === 0) {
+      //   pleasePlay(sounds, allSounds, audios, representSounds);
+      //   createbutton(audios, representSounds);
+      // }
+
+      // console.log(representSounds)
+      // })
+
+      representSounds.addEventListener("click", (event) => {
         // let checkbox = document.getElementsByTagName('input');
         // let isValid = false;
         // console.log(checkbox[0].style.display);
@@ -109,90 +105,97 @@ window.addEventListener("load", () => {
         //     isValid = false;
         //   } else if (checkbox[i].style.display === 'none') {
         //     isValid = true;
-        //   } 
+        //   }
         // }
         // // checkbox.forEach(element => {
         // //   if (element.type === 'checkbox' && element.style.display === 'flex') {
         // //     isValid = false;
         // //   } else if (element.style.display === 'none') {
         // //     isValid = true;
-        // //   } 
-          
+        // //   }
+
         // // });
-        // if (isValid) 
-          playSound(audios, event);
-      })
-      
-      uploadFiles.addEventListener('click', () => {
-        const files = document.getElementById('files').files;
-        const fileFeedback = document.getElementById('fileFeedback');
-        const choosedFolder = document.getElementById('choosedFolder');
-        const folderNameFeedback = document.getElementById('folderNameFeedback');
+        // if (isValid)
+        playSound(audios, event);
+      });
+
+      uploadFiles.addEventListener("click", () => {
+        const files = document.getElementById("files").files;
+        const fileFeedback = document.getElementById("fileFeedback");
+        const choosedFolder = document.getElementById("choosedFolder");
+        const folderNameFeedback = document.getElementById(
+          "folderNameFeedback"
+        );
         let isValid = true;
 
         // let choosedFol
-        if (choosedFolder.value === '' || choosedFolder.value === ' ') {
-          folderNameFeedback.textContent = "Bitte geben sie einen Ordnernamen ein.";
+        if (choosedFolder.value === "" || choosedFolder.value === " ") {
+          folderNameFeedback.textContent =
+            "Bitte geben sie einen Ordnernamen ein.";
           isValid = false;
-        } 
+        }
         let fragmente = {};
-        for (let i = 0, f; f = files[i]; i++) {
+        for (let i = 0, f; (f = files[i]); i++) {
           fragmente[i] = f;
         }
         // console.log(files.length);
         // console.log(fragmente);
-        
+
         if (files.length === 0) {
-          fileFeedback.textContent = "Es wurden keine File zum hochladen gefunden";
+          fileFeedback.textContent =
+            "Es wurden keine File zum hochladen gefunden";
           // console.log('hallo')
           isValid = false;
         }
 
-        if(isValid) {
+        if (isValid) {
           // let selectUploadFolder = document.querySelector("#selectUploadFolder").value
           // let storageFolder = firebase.storage().ref(choosedFolder.value);
           // console.log(fragmente[0]);
-          
+
           uploadImageAsPromise(fragmente, choosedFolder.value);
         }
         //  else
         //   console.log('test')
-        
-      })
+      });
 
-      closePopUpBox.addEventListener('click', () => {
-        document.getElementById('chooseFolderBox').style.opacity = 0;
-        document.getElementById('chooseFolderBox').style.zIndex = 1;
-        document.getElementById('chooseFolderBox').style.pointerEvents = 'none';
-        document.getElementById('chooseFolderBox').style.display = 'none';
-        document.getElementById('chooseFolderBox').style.position = 'none';
-      })
-      const choosedFolder = document.getElementById('choosedFolder');
-      choosedFolder.addEventListener('click', () => {
-        document.getElementById('chooseFolderBox').style.opacity = 1;
-        document.getElementById('chooseFolderBox').style.zIndex = 1;
-        document.getElementById('chooseFolderBox').style.pointerEvents = 'auto';
-        document.getElementById('chooseFolderBox').style.display = 'flex';
+      closePopUpBox.addEventListener("click", () => {
+        document.getElementById("chooseFolderBox").style.opacity = 0;
+        document.getElementById("chooseFolderBox").style.zIndex = 1;
+        document.getElementById("chooseFolderBox").style.pointerEvents = "none";
+        document.getElementById("chooseFolderBox").style.display = "none";
+        document.getElementById("chooseFolderBox").style.position = "none";
+      });
+      const choosedFolder = document.getElementById("choosedFolder");
+      choosedFolder.addEventListener("click", () => {
+        document.getElementById("chooseFolderBox").style.opacity = 1;
+        document.getElementById("chooseFolderBox").style.zIndex = 1;
+        document.getElementById("chooseFolderBox").style.pointerEvents = "auto";
+        document.getElementById("chooseFolderBox").style.display = "flex";
         // document.getElementById('chooseFolderBox'). = 'flex';
-        document.getElementById('newFolderNameFeedback').textContent = '';
-      })
+        document.getElementById("newFolderNameFeedback").textContent = "";
+      });
 
-      choseNewFolder.addEventListener('click', () => {
-        const newFolderName = document.getElementById('newFolderName');
-        const newFolderNameFeedback = document.getElementById("newFolderNameFeedback");
-        const choosedFolder = document.getElementById('choosedFolder');
-        if (newFolderName.value === '' || newFolderName.value === ' ') {
-          newFolderNameFeedback.textContent = "Bitte geben sie einen Ordnernamen ein.";
+      choseNewFolder.addEventListener("click", () => {
+        const newFolderName = document.getElementById("newFolderName");
+        const newFolderNameFeedback = document.getElementById(
+          "newFolderNameFeedback"
+        );
+        const choosedFolder = document.getElementById("choosedFolder");
+        if (newFolderName.value === "" || newFolderName.value === " ") {
+          newFolderNameFeedback.textContent =
+            "Bitte geben sie einen Ordnernamen ein.";
         } else {
           choosedFolder.value = newFolderName.value;
-          newFolderName.value = '';
-          document.getElementById('chooseFolderBox').style.opacity = 0;
-          document.getElementById('chooseFolderBox').style.zIndex = 1;
-          document.getElementById('chooseFolderBox').style.pointerEvents = 'none';
-          document.getElementById('chooseFolderBox').style.display = 'none';
-          document.getElementById('chooseFolderBox').style.position = 'none';
+          newFolderName.value = "";
+          document.getElementById("chooseFolderBox").style.opacity = 0;
+          document.getElementById("chooseFolderBox").style.zIndex = 1;
+          document.getElementById("chooseFolderBox").style.pointerEvents =
+            "none";
+          document.getElementById("chooseFolderBox").style.display = "none";
+          document.getElementById("chooseFolderBox").style.position = "none";
         }
-      })
+      });
 
       // deleteSoundsBtn.addEventListener('click', () => {
       //   const goToDeleteBtn = document.getElementsByTagName('i');
@@ -206,7 +209,7 @@ window.addEventListener("load", () => {
       // })
 
       // uploadFiles.addEventListener('click', () => {
-        
+
       // })
 
       // choosedFolder.addEventListener('click', () => {
@@ -214,42 +217,77 @@ window.addEventListener("load", () => {
       //   chooseFolderBox.style.display = 'flex';
       //   // chooseFolderBox.style.display = 'none'
       // })
+
+      document
+        .getElementById("confirmDeleteFirst")
+        .addEventListener("click", () => {
+          const toDeleteSounds = document.getElementsByClassName(
+            "checkboxToDelete"
+          );
+          const soundsToDeleteFeedback = document.getElementById(
+            "soundsToDeleteFeedback"
+          );
+          let thisSoundsToDelete = [];
+          for (let i = 0; i < toDeleteSounds.length; i++) {
+            // console.log(toDeleteSounds[i].checked === true);
+            if (toDeleteSounds[i].checked === true) {
+              thisSoundsToDelete.push(toDeleteSounds[i]);
+            }
+          }
+          // toDeleteSounds.forEach(element => {
+          if (thisSoundsToDelete.length === 0) {
+            soundsToDeleteFeedback.textContent =
+              "Sie müssen einen Sound auswählen um ihn zu Löschen";
+          } else {
+            document.getElementById("showDeleteBox").style.opacity = 1;
+            document.getElementById("showDeleteBox").style.zIndex = 1;
+            document.getElementById("showDeleteBox").style.pointerEvents =
+              "auto";
+            document.getElementById("showDeleteBox").style.display = "flex";
+            // document.getElementById('chooseFolderBox'). = 'flex';
+            // document.getElementById('newFolderNameFeedback').textContent = '';
+          }
+          // console.log('hello');
+          // });
+          console.log(thisSoundsToDelete);
+          // console.log(document.getElementsByClassName('checkboxToDelete').checked = 'tr');
+        });
     } else {
-      console.log('signed Out');
+      console.log("signed Out");
     }
   });
 });
-  
+
 function uploadImageAsPromise(fragmente, selectUploadFolder) {
   let task;
-  for (let i = 0, f; f = fragmente[i]; i++) {
-    let storageRef =  firebase.storage().ref(`${selectUploadFolder}/${f.name}`)
-    task = storageRef.put(f);  
+  for (let i = 0, f; (f = fragmente[i]); i++) {
+    let storageRef = firebase.storage().ref(`${selectUploadFolder}/${f.name}`);
+    task = storageRef.put(f);
   }
-  console.log(document.getElementsByTagName('body'));
-  console.log(document.getElementsByClassName('lds-ellipsis'));
-  document.getElementsByClassName('lds-ellipsis')[0].style.display = 'inline-block';
+  console.log(document.getElementsByTagName("body"));
+  console.log(document.getElementsByClassName("lds-ellipsis"));
+  document.getElementsByClassName("lds-ellipsis")[0].style.display =
+    "inline-block";
   // load.style.display = 'inline-block';
-  document.getElementsByTagName('body')[0].style.pointerEvents = 'none';
-  task.on('state_changed', function progress(snapshot) {
-    var percentage = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
-    console.log(percentage);
-    // let load = document.getElementsByClassName('lds-ellipsis');
-    
-
-  }, function error(err) {
-
-
-  },function complete() {
-    console.log('complete')
-    // let load = document.getElementsByClassName('lds-ellipsis');
-    // load.style.display = 'flex';
-    document.getElementsByClassName('lds-ellipsis')[0].style.display = 'none';
-    // document.style.pointerEvents = 'auto';
-    document.getElementsByTagName('body')[0].style.pointerEvents = 'auto';
-  });
-    
-
+  document.getElementsByTagName("body")[0].style.pointerEvents = "none";
+  task.on(
+    "state_changed",
+    function progress(snapshot) {
+      var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(percentage);
+      // let load = document.getElementsByClassName('lds-ellipsis');
+    },
+    function error(err) {},
+    function complete() {
+      console.log("complete");
+      // let load = document.getElementsByClassName('lds-ellipsis');
+      // load.style.display = 'flex';
+      document.getElementsByClassName("lds-ellipsis")[0].style.display = "none";
+      // document.style.pointerEvents = 'auto';
+      document.getElementsByTagName("body")[0].style.pointerEvents = "auto";
+      location.reload();
+    }
+  );
 }
 function selectFolder(existingFolders, allFolders) {
   console.log(allFolders);
@@ -265,78 +303,115 @@ function selectFolder(existingFolders, allFolders) {
     // newSound.style.border = `2px solid ${color}`;
     // option.value = title;
     option.textContent = title;
-    option.addEventListener('click', () => {
+    option.addEventListener("click", () => {
       choosedFolder.value = title;
-      document.getElementById('chooseFolderBox').style.opacity = 0;
-      document.getElementById('chooseFolderBox').style.opacity = 0;
-     document.getElementById('chooseFolderBox').style.zIndex = 1;
-    //  document.getElementById('chooseFolderBox').style.pointerEvents = 'none';
-     document.getElementById('chooseFolderBox').style.display = 'none';
-    //  document.getElementById('chooseFolderBox').style.position = 'none';
-    })
+      document.getElementById("chooseFolderBox").style.opacity = 0;
+      document.getElementById("chooseFolderBox").style.opacity = 0;
+      document.getElementById("chooseFolderBox").style.zIndex = 1;
+      //  document.getElementById('chooseFolderBox').style.pointerEvents = 'none';
+      document.getElementById("chooseFolderBox").style.display = "none";
+      //  document.getElementById('chooseFolderBox').style.position = 'none';
+    });
     // newSound.dataset["audio"] = title;
     existingFolders.appendChild(option);
     // existingFolders.appendChild(optionText)
   }
   // let option = document.createElement
-  
 }
-  
+
 function getItemsFromDatabase(storage, storageRef, sounds, path) {
-  
-  storageRef.listAll().then(res => {
-    res.items.forEach(itemRef => {
-      storage.ref(itemRef.fullPath).getDownloadURL().then(url => {
-        let name = itemRef.fullPath.split('/')[1];
-        // .split('.')[0];
-        // .split('_')[1]
-        // if (name.includes('WWM-')) {
-        //   name = name.split('WWM-')[1];
-        // }
-        sounds.push({
-          name: name,
-          soundURL: url,
-          fullPath: itemRef.fullPath,
-          // id: itemRef.fullPath.split('sound')[1].split('_')[0],
-          path: path
-        });
-      }).catch(err => {
+  storageRef.listAll().then((res) => {
+    res.items.forEach((itemRef) => {
+      storage
+        .ref(itemRef.fullPath)
+        .getDownloadURL()
+        .then((url) => {
+          let name = itemRef.fullPath
+          // .split("/")[1];
+          // .split('.')[0];
+          // .split('_')[1]
+          // if (name.includes('WWM-')) {
+          //   name = name.split('WWM-')[1];
+          // }
+          sounds.push({
+            name: name,
+            soundURL: url,
+            fullPath: itemRef.fullPath,
+            // id: itemRef.fullPath.split('sound')[1].split('_')[0],
+            path: path,
+          });
+        })
+        .catch((err) => {
           console.error(err);
-      });
+        });
     });
   });
 }
 
-function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storageRef) {
+function pleasePlay(
+  sounds,
+  allSounds,
+  audios,
+  divAfter,
+  title,
+  audios2,
+  storageRef
+) {
   console.log(sounds.length);
   allSounds = {};
-  divAfter.textContent = '';
+  divAfter.textContent = "";
   // sounds = sounds.sort(GetSortOrder('id'));
-  // console.log(title); 
+  // console.log(title);
   for (let i = 0; i < sounds.length; i++) {
-    if (sounds[i].path === title) 
-      allSounds[sounds[i].name] = sounds[i].soundURL; 
+    if (sounds[i].path === title)
+      allSounds[sounds[i].name] = sounds[i].soundURL;
   }
 
   for (let [title, url] of Object.entries(allSounds)) {
     audios[title] = new Audio(url);
     audios2[title] = new Audio(url);
   }
-  // console.log(title); 
+
+  // let shouldWeDeleteIt = document.createElement('button');
+  // shouldWeDeleteIt.setAttribute('class', 'btnWrapper');
+  // shouldWeDeleteIt.textContent = 'Löschen';
+  // shouldWeDeleteIt.style.display = 'none';
+  // deleteField.appendChild(shouldWeDeleteIt);
+
+  let soundToDeleteBox = document.createElement("div");
+  let popUpBoxToConfirm = document.createElement("div");
+  let buttonConfirm = document.createElement("button");
+  let buttonCancel = document.createElement("button");
+
+  soundToDeleteBox.setAttribute("class", "showBox");
+  soundToDeleteBox.setAttribute("id", "showDeleteBox");
+  popUpBoxToConfirm.setAttribute("class", "showPopUpBox");
+  buttonConfirm.setAttribute("class", "btnWrapper");
+  buttonCancel.setAttribute("class", "btnWrapper");
+
+  buttonConfirm.textContent = "Löschen";
+  buttonCancel.textContent = "Abrechen";
+
+  popUpBoxToConfirm.appendChild(buttonConfirm);
+  popUpBoxToConfirm.appendChild(buttonCancel);
+  soundToDeleteBox.appendChild(popUpBoxToConfirm);
+  soundboardWrapper.appendChild(soundToDeleteBox);
+
+  // console.log(title);
   for (let soundTitle of Object.keys(audios2)) {
     let newSound = document.createElement("p");
-    let newSoundName = document.createElement("label")
+    let newSoundName = document.createElement("label");
     let soundToDelete = document.createElement("input");
 
     newSound.setAttribute("class", "soundsToPlay");
-    newSoundName.setAttribute("for", soundTitle)
+    newSoundName.setAttribute("for", soundTitle);
     soundToDelete.setAttribute("type", "checkbox");
     soundToDelete.setAttribute("name", soundTitle);
     soundToDelete.setAttribute("id", soundTitle);
     soundToDelete.setAttribute("class", "checkboxToDelete");
     // newSoundName.style.zIndex = "1";
     // newSound.style.zIndex = "99";
-    soundToDelete.style.display = 'none';
+    soundToDelete.style.display = "none";
     const color = getRandomColor();
     newSound.style.backgroundColor = color;
     newSound.style.border = `2px solid ${color}`;
@@ -345,29 +420,51 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storage
 
     // console.log(newSoundName);
     newSound.appendChild(soundToDelete);
-    newSound.appendChild(newSoundName)
+    newSound.appendChild(newSoundName);
     divAfter.appendChild(newSound);
-    // console.log(title); 
+    // console.log(title);
 
-    soundToDelete.addEventListener('click', () => {
-      // storageRef.child(title).delete();
-      // console.log(title); 
-      // console.log(storageRef);
+    // soundToDelete.addEventListener('click', () => {
+    //   // storageRef.child(title).delete();
+    //   // console.log(title);
+    //   // console.log(storageRef);
 
-      
+    //   const toDeleteSounds = document.getElementsByClassName('checkboxToDelete');
+    //   const soundsToDeleteFeedback = document.getElementById('soundsToDeleteFeedback');
+    //   let thisSoundsToDelete = [];
+    //   for (let i = 0; i < toDeleteSounds.length; i++) {
+    //     // console.log(toDeleteSounds[i].checked === true);
+    //     if(toDeleteSounds[i].checked === true) {
+    //       thisSoundsToDelete.push(toDeleteSounds[i]);
+    //     }
+    //   }
 
-      // // Delete the file
-      // pathToDelete.delete().then(() => {
-      //   console.log('Sucess');
-      //   location.reload();  
-      //   // getItemsFromDatabase()
-      //   // File deleted successfully
-      // }).catch((error) => {
-      //   // console.log("hallo");
-      //   console.log(error);
-      //   // Uh-oh, an error occurred!
-      // });
-    })
+    //   console.log(thisSoundsToDelete);
+
+    // let desertRef = storageRef.child('');
+
+    // // Delete the file
+    // desertRef.delete().then(() => {
+    //     console.log('Sucess');
+    //     // File deleted successfully
+    //   }).catch((error) => {
+    //     console.log("error");
+    //     // Uh-oh, an error occurred!
+    //   });
+    // })
+
+    // Delete the file
+    // pathToDelete.delete().then(() => {
+    //   console.log('Sucess');
+    //   location.reload();
+    //   // getItemsFromDatabase()
+    //   // File deleted successfully
+    // }).catch((error) => {
+    //   // console.log("hallo");
+    //   console.log(error);
+    //   // Uh-oh, an error occurred!
+    // });
+    // })
 
     // let whichCheck;
     var whichCheck;
@@ -379,25 +476,24 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storage
       // console.log(id);
     });
     newSound.addEventListener("touchend", () => {
-      
       touchend();
       // whichCheck.checked;
       // , false
     });
-    var onlongtouch; 
+    var onlongtouch;
     var timer;
     var touchduration = 1000; //length of time we want the user to touch before we do something
-    
+
     function touchstart(e) {
-        // e.preventDefault();
-        whichCheck = newSound.getElementsByTagName('input')[0];
-        // console.log(whichCheck);
-        // console.log(newSound.getElementsByTagName('input')[0]);
-        if (!timer) {
-            timer = setTimeout(onlongtouch, touchduration);
-        }
+      // e.preventDefault();
+      whichCheck = newSound.getElementsByTagName("input")[0];
+      // console.log(whichCheck);
+      // console.log(newSound.getElementsByTagName('input')[0]);
+      if (!timer) {
+        timer = setTimeout(onlongtouch, touchduration);
+      }
     }
-    
+
     function touchend() {
       //stops short touches from firing the event
       // console.log(newSound.getElementsByTagName('input')[0]);
@@ -406,26 +502,27 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storage
         timer = null;
       }
     }
-    onlongtouch = function() { 
-        timer = null;
-        // soundToDelete
-        // document.getElementById('ping').innerText+='ping\n';
-        // console.log(newSound.getElementsByTagName('input')[0]);
+    onlongtouch = function () {
+      timer = null;
+      // soundToDelete
+      // document.getElementById('ping').innerText+='ping\n';
+      // console.log(newSound.getElementsByTagName('input')[0]);
 
-        // soundToDelete.checked = true
-        const goToDeleteBtn = document.getElementsByClassName('checkboxToDelete');
-        // getElementsByTagName('input');
-        // console.log(goToDeleteBtn);
-        for (let i = 0; i < goToDeleteBtn.length; i++) {
-          goToDeleteBtn[i].checked = false;
-          goToDeleteBtn[i].style.display = 'flex';
-        }
-        // console.log(whichCheck);
-        whichCheck.checked = true;
-        
+      // soundToDelete.checked = true
+      const goToDeleteBtn = document.getElementsByClassName("checkboxToDelete");
+      // getElementsByTagName('input');
+      // console.log(goToDeleteBtn);
+      for (let i = 0; i < goToDeleteBtn.length; i++) {
+        goToDeleteBtn[i].checked = false;
+        goToDeleteBtn[i].style.display = "flex";
+      }
+      // console.log(whichCheck);
+      whichCheck.checked = true;
+      document.getElementById("confirmDeleteFirst").style.display = "flex";
+      // shouldWeDeleteIt.style.display = 'flex';
 
-        // console.log(newSoundName); 
-        // soundToDelete.checked = true;
+      // console.log(newSoundName);
+      // soundToDelete.checked = true;
     };
 
     // let clickstart = 1000;
@@ -454,25 +551,74 @@ function pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storage
     //   //   alert('Test');
     //   // }
     //   // setTimeout('1000');
-      
+
     //   // console.log('test123');
     // })
 
     // newSound.addEventListener('touchend', (event) => {
     //   console.log('asfdaaaaaaaa sfaaas');
     // })
-  //   // newSound.addEventListener('touchstop', () => {
-  //   //   clickstop = e.timeStamp - clickstart;
-  //   //   if (clickstop >= 2000) 
-  //   //     console.log('test32');
-  //   //   else
-  //   //     console.log('false');
-  //   // })
+    //   // newSound.addEventListener('touchstop', () => {
+    //   //   clickstop = e.timeStamp - clickstart;
+    //   //   if (clickstop >= 2000)
+    //   //     console.log('test32');
+    //   //   else
+    //   //     console.log('false');
+    //   // })
   }
+
+  buttonConfirm.addEventListener("click", () => {
+    const toDeleteSounds = document.getElementsByClassName("checkboxToDelete");
+    const collection = document.getElementsByClassName("soundsToPlay");
+    let thisSoundsToDelete = [];
+
+    for (let i = 0; i < collection.length; i++) {
+      // console.log(collection[i].childNodes[0].checked === true);
+      if (collection[i].childNodes[0].checked === true) {
+        thisSoundsToDelete.push(collection[i]);
+      }
+    }
+    
+    console.log(thisSoundsToDelete[0].childNodes[1].dataset.audio);
+    for (let i = 0; i < thisSoundsToDelete.length; i++) {
+      let desertRef = storageRef.child(thisSoundsToDelete[i].childNodes[1].dataset.audio);
+
+      // Delete the file
+      desertRef
+        .delete()
+        .then(() => {
+          console.log("Sucess");
+          location.reload();
+          // File deleted successfully
+        })
+        .catch((error) => {
+          console.log("error");
+          // Uh-oh, an error occurred!
+        });
+    }
+    // console.log(test[1].childNodes[0].checked === true);
+    // const soundsToDeleteFeedback = document.getElementById('soundsToDeleteFeedback');
+    // for (let i = 0; i < toDeleteSounds.length; i++) {
+    //   // console.log(toDeleteSounds[i].checked === true);
+    //   if (toDeleteSounds[i].checked === true) {
+    //     thisSoundsToDelete.push(toDeleteSounds[i]);
+
+    //   }
+    // }
+
+    
+  });
 }
 
-function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audios, storageRef) {
-  representSounds.textContent = '';
+function createButtonToLoad(
+  representSounds,
+  allFolders,
+  sounds,
+  allSounds,
+  audios,
+  storageRef
+) {
+  representSounds.textContent = "";
   for (let title of Object.keys(allFolders)) {
     let loadSound = document.createElement("p");
     let removeSound = document.createElement("p");
@@ -484,10 +630,10 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
     removeSound.textContent = `Undisplay ${title}`;
 
     // vll ein Attribut vergeben --> aber selber name für alle
-    loadSound.setAttribute("class", "loadButton"); 
-    loadSound.setAttribute("id", `${title}Btn`); 
-    // removeSound.setAttribute("class", "loadButton"); 
-    removeSound.setAttribute("class", "undisplayBtn"); 
+    loadSound.setAttribute("class", "loadButton");
+    loadSound.setAttribute("id", `${title}Btn`);
+    // removeSound.setAttribute("class", "loadButton");
+    removeSound.setAttribute("class", "undisplayBtn");
     divAfter.setAttribute("class", title);
     // folderToDelete.setAttribute("class", "fas fa-times");
     // folderAndSoundsToDelete.setAttribute("class", "fas fa-times");
@@ -500,27 +646,35 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
     // removeSound.appendChild(folderAndSoundsToDelete);
     representSounds.appendChild(loadSound);
     representSounds.appendChild(removeSound);
-    representSounds.appendChild(divAfter)
+    representSounds.appendChild(divAfter);
 
-    loadSound.addEventListener('click', () => {
-      let audios2 = {}; 
-      pleasePlay(sounds, allSounds, audios, divAfter, title, audios2, storageRef)
-      divAfter.style.display = 'flex';
-      loadSound.style.display = 'none';
-      removeSound.style.display = 'flex';
-    })
+    loadSound.addEventListener("click", () => {
+      let audios2 = {};
+      pleasePlay(
+        sounds,
+        allSounds,
+        audios,
+        divAfter,
+        title,
+        audios2,
+        storageRef
+      );
+      divAfter.style.display = "flex";
+      loadSound.style.display = "none";
+      removeSound.style.display = "flex";
+    });
 
-    removeSound.addEventListener('click', () => {
-      divAfter.style.display = 'none';
-      loadSound.style.display = 'flex';
-      removeSound.style.display = 'none';
-    })
+    removeSound.addEventListener("click", () => {
+      divAfter.style.display = "none";
+      loadSound.style.display = "flex";
+      removeSound.style.display = "none";
+      document.getElementById("confirmDeleteFirst").style.display = "none";
+      document.getElementById("soundsToDeleteFeedback").textContent = "";
+    });
     // console.log(title);
 
     // folderToDelete.addEventListener('click', () => {
     //   storageRef.child(title).delete();
-      
-      
 
     //   let desertRef = storageRef.child('sd/Culcha Candela - Von allein.mp3');
 
@@ -534,12 +688,10 @@ function createButtonToLoad(representSounds, allFolders, sounds, allSounds, audi
     //   });
     // })
   }
-  
 }
 
-
 function playSound(audios, event) {
-  let checkbox = document.getElementsByTagName('input');
+  let checkbox = document.getElementsByTagName("input");
   let isValid = false;
   // console.log(checkbox[0].style.display);
   // logcheckbox[1].style.display === 'none'
@@ -549,7 +701,10 @@ function playSound(audios, event) {
   for (let i = 0; i <= checkbox.length; i++) {
     // console.log(checkbox[i].style.display);
     // console.log(checkbox[i].type);
-    if (checkbox[i].type === 'checkbox' && checkbox[i].style.display === 'none') {
+    if (
+      checkbox[i].type === "checkbox" &&
+      checkbox[i].style.display === "none"
+    ) {
       // console.log(checkbox[i]);
 
       /**
@@ -570,7 +725,7 @@ function playSound(audios, event) {
     //   isValid = false;
     // } else if (checkbox[i].style.display === 'none') {
     //   isValid = true;
-    // } 
+    // }
   }
 
   if (isValid) {
@@ -581,121 +736,120 @@ function playSound(audios, event) {
         audio.currentTime = 0;
       }
       audio.play();
-      
-      navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+      navigator.vibrate =
+        navigator.vibrate ||
+        navigator.webkitVibrate ||
+        navigator.mozVibrate ||
+        navigator.msVibrate;
       if (navigator.vibrate) {
         navigator.vibrate([50]);
       }
     }
   }
   // console.log(document.getElementsByTagName('input')[0].style.display);
-  
 }
 
-function GetSortOrder(sortetArr) {    
-  return function(a, b) {    
-      if (a[sortetArr] > b[sortetArr]) {    
-          return 1;    
-      } else if (a[sortetArr] < b[sortetArr]) {    
-          return -1;    
-      }    
-      return 0;    
-  }    
+function GetSortOrder(sortetArr) {
+  return function (a, b) {
+    if (a[sortetArr] > b[sortetArr]) {
+      return 1;
+    } else if (a[sortetArr] < b[sortetArr]) {
+      return -1;
+    }
+    return 0;
+  };
 }
 
 function getRandomColor() {
-  const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
-  return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
+  const randomColors = [
+    "#42b983",
+    "#f66",
+    "#e7ecf3",
+    "#486491",
+    "#ffe88c",
+    "#dc5656",
+    "#00a0d2",
+    "#76c3bd",
+    "#fdc162",
+    "#10a296",
+    "#485b6e",
+    "#10bf9d",
+  ];
+  return randomColors[
+    Math.floor(Math.random() * Math.floor(randomColors.length))
+  ];
 }
-  
-  // console.log(numberOfItems);
-  // sounds.forEach(item => {
-  //   console.log(item);
-  // })
-  
 
-  
-  // console.log(sounds[5]);
-  // let sortSounds = [];
-  // representSounds.textContent = "";
-  // for (const index in sounds) {
-  //   sortSounds.push(sounds[index]);
-  // }
-  // sortSounds
+// console.log(numberOfItems);
+// sounds.forEach(item => {
+//   console.log(item);
+// })
 
-  
+// console.log(sounds[5]);
+// let sortSounds = [];
+// representSounds.textContent = "";
+// for (const index in sounds) {
+//   sortSounds.push(sounds[index]);
+// }
+// sortSounds
 
-  
+// console.log(sortSounds)
 
-  // console.log(sortSounds)
-  
-  // sortSounds = sortSounds.sort(GetSortOrder('id'));
-  // console.log(sortSounds)
-  
-  // console.log(sortSounds[1].name)
-  // console.log(allSounds);
-  
-  
-  // console.log(sortSounds);
+// sortSounds = sortSounds.sort(GetSortOrder('id'));
+// console.log(sortSounds)
 
+// console.log(sortSounds[1].name)
+// console.log(allSounds);
 
-  // if (sounds.length === 0) {
-  //   representSounds.textContent = 'Keine Sounds verfügbar';
-  // } else {
+// console.log(sortSounds);
 
-  //   let allSounds = getAllSounds(sounds);
-  //   console.log(allSounds.id)
-    
-  //   console.log(sounds);
-  //   console.log(audios)
-  
-  //   let representSounds = document.getElementById("representSounds");
-    
-  //   console.log(representSounds)
+// if (sounds.length === 0) {
+//   representSounds.textContent = 'Keine Sounds verfügbar';
+// } else {
 
+//   let allSounds = getAllSounds(sounds);
+//   console.log(allSounds.id)
 
-    
-  // }
-  
+//   console.log(sounds);
+//   console.log(audios)
 
+//   let representSounds = document.getElementById("representSounds");
 
+//   console.log(representSounds)
 
+// }
 
 // function loadAudio(allSounds, audios) {
 //   // let audios = {};
-  
+
 //   // console.log(audios)
 //   // return audios;
-  
+
 // }
 
 // function createbutton(audios, representSounds) {
 //   console.log(audios);
-  
+
 //   console.log(Object.keys(audios));
 //   // return representSounds;
 //   console.log("hi4");
 // }
-
-
 
 // function getAllSounds(sounds) {
 //   sounds.forEach(element => {
 //     console.log(element);
 //   });
 //   let allSounds = {};
-    
+
 //   for (let i = 0; i < sounds.length; i++) {
 //     allSounds[sounds[i].name] = sounds[i].soundURL;
 //     console.log(allSounds);
 //   }
 //   console.log(sounds);
-  
+
 //   return allSounds;
 // }
-
-
-
 
 // function representSounds(sounds) {
 //   let sortSounds = [];
@@ -705,30 +859,26 @@ function getRandomColor() {
 //     sortSounds.push(sounds[index]);
 //   }
 
-  
-
 //   function getRandomColor() {
 //     const randomColors = ['#42b983', '#f66', '#e7ecf3', '#486491', '#ffe88c', '#dc5656', '#00a0d2', '#76c3bd', '#fdc162', '#10a296', '#485b6e', '#10bf9d'];
 //     return randomColors[Math.floor(Math.random() * Math.floor(randomColors.length))];
 //   }
 
 //   // console.log(sortSounds)
-  
+
 //   sortSounds = sortSounds.sort(GetSortOrder('id'));
 //   console.log(sortSounds)
-  
+
 //   // console.log(sortSounds[1].name)
 //   // console.log(allSounds);
-  
-  
-//   // console.log(sortSounds);
 
+//   // console.log(sortSounds);
 
 //   if (sortSounds.length === 0) {
 //     representSounds.textContent = 'Keine Sounds verfügbar';
 //   } else {
 //     let allSounds = {};
-    
+
 //     for (let i = 0; i < sortSounds.length; i++) {
 //       allSounds[sortSounds[i].name] = sortSounds[i].soundURL;
 //     }
@@ -736,15 +886,15 @@ function getRandomColor() {
 //     let audios = {};
 //     for (let [title, url] of Object.entries(allSounds)) {
 //         audios[title] = new Audio(url);
-        
+
 //     }
 //     console.log(sortSounds);
 //     console.log(audios)
-  
+
 //     let representSounds = document.getElementById("representSounds");
 //     for (let title of Object.keys(audios)) {
 //       let newSound = document.createElement("p");
-//       newSound.setAttribute("class", "soundsToPlay"); 
+//       newSound.setAttribute("class", "soundsToPlay");
 //       newSound.textContent = title;
 //       const color = getRandomColor();
 //       newSound.style.backgroundColor = color;
@@ -753,7 +903,6 @@ function getRandomColor() {
 //       representSounds.appendChild(newSound);
 //       // console.log('dajbfnds')
 //     }
-    
 
 //     // for (let i = 0; i < sortSounds.length; i++) {
 //     //   sortSounds[i].title = new Audio(sortSounds[i].soundURL)
@@ -769,7 +918,7 @@ function getRandomColor() {
 //           audio.currentTime = 0;
 //         }
 //         audio.play();
-        
+
 //         navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 //         if (navigator.vibrate) {
 //           navigator.vibrate([50]);
@@ -779,9 +928,6 @@ function getRandomColor() {
 //     // var playOneSound = -1;
 //     // for (let i = 0; i < sortSounds.length; i++) {
 //     //   if (sortSounds[i] != null) {
-        
-
-
 
 //         // const color = getRandomColor();
 
@@ -790,7 +936,7 @@ function getRandomColor() {
 //         // startNewAudio.textContent = sortSounds[i].name;
 //         // newAudio.setAttribute('src', sortSounds[i].soundURL);
 
-//         // startNewAudio.setAttribute("class", "soundsToPlay"); 
+//         // startNewAudio.setAttribute("class", "soundsToPlay");
 //         // startNewAudio.style.backgroundColor = color;
 //         // startNewAudio.style.border = `2px solid ${color}`;
 //         // startNewAudio.addEventListener('click', () => {
@@ -804,7 +950,7 @@ function getRandomColor() {
 //         // const newSound = document.createElement("p");
 //         // newSound.textContent = sortSounds[i].name;
 //         // const color = getRandomColor();
-//         // newSound.setAttribute("class", "soundsToPlay"); 
+//         // newSound.setAttribute("class", "soundsToPlay");
 //         // newSound.setAttribute('id', i);
 //         // // const soundsToPlay = document.getElementsByName("soundsToPlay");
 //         // newSound.style.backgroundColor = color;
@@ -818,7 +964,7 @@ function getRandomColor() {
 //         //   //   audioSound.stop();
 //         //   // }
 //         //   // audioSound.play();
-          
+
 //         //   navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 //         //   if (navigator.vibrate) {
 //         //     navigator.vibrate([50]);
