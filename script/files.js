@@ -338,7 +338,7 @@ window.addEventListener('load', () => {
               name: name,
               soundURL: url,
               fullPath: itemRef.fullPath,
-              // id: itemRef.fullPath.split('sound')[1].split('_')[0],
+              id: itemRef.fullPath.split('/')[1].split('.')[0],
               path: path,
             });
           })
@@ -361,7 +361,7 @@ window.addEventListener('load', () => {
     // console.log(sounds.length);
     allSounds = {};
     divAfter.textContent = "";
-    // sounds = sounds.sort(GetSortOrder('id'));
+    sounds = sounds.sort(getSortOrder('id'));
     // console.log(title);
     for (let i = 0; i < sounds.length; i++) {
       if (sounds[i].path === title)
@@ -759,7 +759,7 @@ window.addEventListener('load', () => {
     // console.log(document.getElementsByTagName('input')[0].style.display);
   }
   
-  function GetSortOrder(sortetArr) {
+  function getSortOrder(sortetArr) {
     return function (a, b) {
       if (a[sortetArr] > b[sortetArr]) {
         return 1;
