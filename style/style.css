@@ -51,7 +51,7 @@ body {
 #soundboardWrapper {
   display: flex;
   width: 100vw;
-  min-height: 30vh;
+  min-height: 91vh;
   text-align: center;
   align-items: center;
   flex-wrap: wrap;
@@ -59,7 +59,9 @@ body {
 }
 
 #uploadWrapper {
-  display: flex;
+  width: 100vw;
+  height: 91vh;
+  display: none;
   /* z-index: 999; */
 }
 
@@ -68,23 +70,42 @@ body {
 } */
 
 #signInWrapper {
-  display: flex;
+  width: 100vw;
+  height: 91vh;
+  display: none;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
 #signUpWrapper {
-  display: flex;
+  width: 100vw;
+  height: 91vh;
+  display: none;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
+}
+
+#goToSignUp {
+  color: #0070e1;
+}
+
+#goToSignIn {
+  color: #0070e1;
 }
 
 #footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  height: 9vh;
+  width: 100vw;
+  background: #e7ecf3;
+  font-size: 1.2em;
+  left: 0%;
+  bottom: 0%;
+  position: sticky;
 }
 /* #loadSounds {
     min-width: 15vw;
@@ -104,8 +125,8 @@ body {
 #representSounds {
   display: flex;
   flex-wrap: wrap;
-  /* min-width: 80vw;
-    min-height: 10vh; */
+  /* width: 100vw;
+  min-height: 90vh; */
   justify-content: center;
   align-items: center;
   flex-direction: column;
