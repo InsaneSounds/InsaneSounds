@@ -17,6 +17,10 @@ body {
 
   /* pointer-events: none; */
 }
+
+h1 {
+  font-size: 1.8em;
+}
 .showBox {
   display: none;
   position: fixed;
@@ -39,6 +43,20 @@ body {
   pointer-events: auto;
 }
 
+#ifSignIn {
+  color: #db3232;
+  font-size: 1.05em;
+  /* font-weight: bold; */
+}
+
+#ifSignInUpload {
+  color: #db3232;
+  font-size: 1.05em;
+}
+
+#normalScreen {
+  display: none;
+}
 .showBox .showPopUpBox {
   width: 400px;
   position: relative;
@@ -58,10 +76,17 @@ body {
   flex-direction: column;
 }
 
+i {
+  /* color: #2448e4; */
+  /* background-color: #2448e4; */
+}
 #uploadWrapper {
   width: 100vw;
   height: 91vh;
   display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   /* z-index: 999; */
 }
 
@@ -87,12 +112,72 @@ body {
   align-items: center;
 }
 
+input[type=text], input[type=password] {
+  outline: none;
+  border: none;
+  background: none;
+
+  /* width: 35vw;
+  height: 4vh; */
+  font-size: 16px;
+  margin: 10px 0;
+  padding: 5px;
+
+  
+  transition: border-bottom 500ms ease;
+  
+  border-bottom: lightgray 3px solid;
+}
+
+input[type=file]file-upload-button {
+  outline: none;
+  border: none;
+  background: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  /* position: relative; */
+  /* top: 150px; */
+  /* font-family: calibri; */
+  /* width: 150px; */
+  padding: 10px;
+  /* -webkit-border-radius: 5px;
+  -moz-border-radius: 5px; */
+  /* border: 1px dashed #BBB; */
+  text-align: center;
+  /* background-color: #DDD; */
+  cursor: pointer;
+  background-color: #2448e4;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  border-bottom:#2448e4 3px solid;
+}
+
+#choosedFolder {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, .4) 2px 5px 7px 0px;
+  transition: border-bottom 500ms ease;
+  border-radius: 5px;
+}
+
+.btnWrapper {
+  background-color: #166ba2;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, .4) 2px 5px 7px 0px;
+  border-radius: 5px;
+}
+
 #goToSignUp {
-  color: #0070e1;
+  color: #2448e4;
 }
 
 #goToSignIn {
-  color: #0070e1;
+  color: #2448e4;
 }
 
 #footer {

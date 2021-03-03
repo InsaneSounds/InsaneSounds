@@ -17,11 +17,23 @@ window.addEventListener('load', () => {
     // // Initialize Firebase
     // firebase.initializeApp(firebaseConfig);
     // firebase.analytics();
-  
+    // console.log(document.getElementById('soundboardWrapper').style.display === 'flex');
+
+    // if (document.getElementById('soundboardWrapper').style.display === 'flex') {
+    //   document.getElementById('makeFullScreen').style.display = 'flex';
+    //   document.getElementById('normalScreen').style.display = 'none';
+    // } else {
+    //   document.getElementById('makeFullScreen').style.display = 'none';
+    //   document.getElementById('normalScreen').style.display = 'none';
+    // }
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const uid = user.uid;
         console.log(uid);
+        document.getElementById('signOut').style.display = 'flex';
+        document.getElementById('userIcon').style.display = 'none';
+        document.getElementById('ifSignIn').textContent = '';
+        
   
         const storage = firebase.storage();
         let sounds = [];
@@ -253,8 +265,29 @@ window.addEventListener('load', () => {
             // console.log(thisSoundsToDelete);
             // console.log(document.getElementsByClassName('checkboxToDelete').checked = 'tr');
           });
+
+          document.getElementById('makeFullScreen').addEventListener('click', () => {
+            document.getElementById('footer').style.display = 'none';
+            document.getElementById('makeFullScreen').style.display = 'none';
+            document.getElementById('normalScreen').style.display = 'flex';
+            document.getElementById('soundboardHeadline').style.display = 'none';
+          })
+
+          document.getElementById('normalScreen').addEventListener('click', () => {
+            document.getElementById('footer').style.display = 'flex';
+            document.getElementById('makeFullScreen').style.display = 'flex';
+            document.getElementById('normalScreen').style.display = 'none';
+            document.getElementById('soundboardHeadline').style.display = 'flex';
+          })
       } else {
         console.log("signed Out");
+        document.getElementById('signOut').style.display = 'none';
+        document.getElementById('userIcon').style.display = 'flex';
+        document.getElementById('ifSignIn').textContent = 'Bitte Melden Sie sich an!';
+        document.getElementById('ifSignInUpload').textContent ='Bitte Melden Sie sich an!!!!';
+        document.getElementById('uploadWrapper').style.pointerEvents = 'none';
+        document.getElementById('makeFullScreen').style.display = 'none';
+        document.getElementById('normalScreen').style.display = 'none';
       }
     });
   });
@@ -419,7 +452,7 @@ window.addEventListener('load', () => {
       const color = getRandomColor();
       newSound.style.backgroundColor = color;
       newSound.style.border = `2px solid ${color}`;
-      newSound.textContent = splittedTitle;
+      newSoundName.textContent = splittedTitle;
       newSound.dataset["audio"] = soundTitle;
   
       // console.log(newSoundName);

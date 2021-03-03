@@ -109,6 +109,7 @@ window.addEventListener('load', () => {
         // firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).set({
         //   email: firebase.auth().currentUser.email
       // });
+        location.reload();
       })
     }
   })
@@ -167,12 +168,14 @@ window.addEventListener('load', () => {
       });
 
       promise.then(() => {
+        location.reload();
       })
     }
   })
 
   signOut.addEventListener('click', () => {
     firebase.auth().signOut().then(() => {
+      location.reload();
     }).catch((error) => {
     });
   })
