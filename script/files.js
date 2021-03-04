@@ -28,8 +28,8 @@ window.addEventListener('load', () => {
     // }
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        const uid = user.uid;
-        console.log(uid);
+        // const uid = user.uid;
+        // console.log(uid);
         document.getElementById('signOut').style.display = 'flex';
         document.getElementById('userIcon').style.display = 'none';
         document.getElementById('ifSignIn').textContent = '';
