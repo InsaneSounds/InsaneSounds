@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
     // const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().useDeviceLanguage();
     firebase.auth().signInWithRedirect(provider);
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
       // console.log(firebase.auth().currentUser.uid);
       // console.log(firebase.database(`/users/${firebase.auth().currentUser.uid}`).textContent);
       // if (firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`) === firebase.auth().currentUser.uid) {
@@ -13,26 +13,26 @@ window.addEventListener('load', () => {
       // } else {
         
       // }
-    }).catch(error => {
-      console.log(error);
-    })
+    // }).catch(error => {
+    //   console.log(error);
+    // })
   });
 
   // console.log(user.providerData);
   googleSignUpBtn.addEventListener('click', () => {
     // sessionStorage.setItem('choseGoogle', true);
-    const provider = new firebase.auth.GoogleAuthProvider();
+    // const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().useDeviceLanguage();
     firebase.auth().signInWithRedirect(provider);
-    firebase.auth().signInWithPopup(GoogleProvider).then(() => {
+    // firebase.auth().signInWithPopup(GoogleProvider).then(() => {
       // if (firebase.auth().currentUser.email) {
       //   console.log("sucsess");
       // } else {
         
       // }
-    }).catch(error => {
-      console.log(error);
-    })
+    // }).catch(error => {
+    //   console.log(error);
+    // })
   })
 
 
