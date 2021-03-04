@@ -42,11 +42,13 @@ window.addEventListener('load', () => {
         let representSounds = document.getElementById("representSounds");
         const uploadFiles = document.getElementById("uploadFiles");
         const existingFolders = document.getElementById("existingFolders");
-  
+        
         let allFolders = {};
         let nameOfStorage = {};
         let storageReference = storage.ref();
         let storageRef;
+        // console.log(storageReference);
+        // console.log(firebase.storage().);
         storageReference.listAll().then((res) => {
           // console.log('storageReference');
           res.prefixes.forEach((element) => {
@@ -63,10 +65,14 @@ window.addEventListener('load', () => {
             sounds,
             allSounds,
             audios,
-            storageReference
+            storageReference,
+            user.uid
           );
           selectFolder(existingFolders, allFolders);
           // console.log(sounds.length);
+        }).catch((error) => {
+          // console.log(error);
+          document.getElementById('ifSignIn').textContent = 'Wir haben gerade einen Fehler bitte versuchen sie es später nocheinmal!';
         });
   
         // console.log(sounds.length);
@@ -132,41 +138,48 @@ window.addEventListener('load', () => {
         });
   
         uploadFiles.addEventListener("click", () => {
-          const files = document.getElementById("files").files;
-          const fileFeedback = document.getElementById("fileFeedback");
-          const choosedFolder = document.getElementById("choosedFolder");
-          const folderNameFeedback = document.getElementById(
-            "folderNameFeedback"
-          );
-          let isValid = true;
-  
-          // let choosedFol
-          if (choosedFolder.value === "" || choosedFolder.value === " ") {
-            folderNameFeedback.textContent =
-              "Bitte geben sie einen Ordnernamen ein.";
-            isValid = false;
+          // console.log(user.uid);
+          // nur ich darf Sounds hinzufügen
+          if (user.uid === 'sGInxamkNwd0WrnJ7S08aOkg5nq2') {
+            const files = document.getElementById("files").files;
+            const fileFeedback = document.getElementById("fileFeedback");
+            const choosedFolder = document.getElementById("choosedFolder");
+            const folderNameFeedback = document.getElementById(
+              "folderNameFeedback"
+            );
+            let isValid = true;
+    
+            // let choosedFol
+            if (choosedFolder.value === "" || choosedFolder.value === " ") {
+              folderNameFeedback.textContent =
+                "Bitte geben sie einen Ordnernamen ein.";
+              isValid = false;
+            }
+            let fragmente = {};
+            for (let i = 0, f; (f = files[i]); i++) {
+              fragmente[i] = f;
+            }
+            // console.log(files.length);
+            // console.log(fragmente);
+    
+            if (files.length === 0) {
+              fileFeedback.textContent =
+                "Es wurden keine File zum hochladen gefunden";
+              // console.log('hallo')
+              isValid = false;
+            }
+    
+            if (isValid) {
+              // let selectUploadFolder = document.querySelector("#selectUploadFolder").value
+              // let storageFolder = firebase.storage().ref(choosedFolder.value);
+              // console.log(fragmente[0]);
+    
+              uploadImageAsPromise(fragmente, choosedFolder.value);
+            }
+          } else {
+            document.getElementById('ifSignInUpload').textContent = 'Sie sind nicht zu dieser Funktion berechtigt.'
           }
-          let fragmente = {};
-          for (let i = 0, f; (f = files[i]); i++) {
-            fragmente[i] = f;
-          }
-          // console.log(files.length);
-          // console.log(fragmente);
-  
-          if (files.length === 0) {
-            fileFeedback.textContent =
-              "Es wurden keine File zum hochladen gefunden";
-            // console.log('hallo')
-            isValid = false;
-          }
-  
-          if (isValid) {
-            // let selectUploadFolder = document.querySelector("#selectUploadFolder").value
-            // let storageFolder = firebase.storage().ref(choosedFolder.value);
-            // console.log(fragmente[0]);
-  
-            uploadImageAsPromise(fragmente, choosedFolder.value);
-          }
+          
           //  else
           //   console.log('test')
         });
@@ -389,7 +402,8 @@ window.addEventListener('load', () => {
     divAfter,
     title,
     audios2,
-    storageRef
+    storageRef,
+    username
   ) {
     // console.log(sounds.length);
     allSounds = {};
@@ -546,20 +560,25 @@ window.addEventListener('load', () => {
         // console.log(newSound.getElementsByTagName('input')[0]);
   
         // soundToDelete.checked = true
-        const goToDeleteBtn = document.getElementsByClassName("checkboxToDelete");
-        // getElementsByTagName('input');
-        // console.log(goToDeleteBtn);
-        for (let i = 0; i < goToDeleteBtn.length; i++) {
-          goToDeleteBtn[i].checked = false;
-          goToDeleteBtn[i].style.display = "flex";
+        // console.log(username);
+        if (username === 'sGInxamkNwd0WrnJ7S08aOkg5nq2') {
+          const goToDeleteBtn = document.getElementsByClassName("checkboxToDelete");
+          // getElementsByTagName('input');
+          // console.log(goToDeleteBtn);
+          for (let i = 0; i < goToDeleteBtn.length; i++) {
+            goToDeleteBtn[i].checked = false;
+            goToDeleteBtn[i].style.display = "flex";
+          }
+          // console.log(whichCheck);
+          whichCheck.checked = true;
+          document.getElementById("confirmDeleteFirst").style.display = "flex";
+          // shouldWeDeleteIt.style.display = 'flex';
+    
+          // console.log(newSoundName);
+          // soundToDelete.checked = true;
+        } else {
+          // document.getElementById('ifSignIn').textContent = ''
         }
-        // console.log(whichCheck);
-        whichCheck.checked = true;
-        document.getElementById("confirmDeleteFirst").style.display = "flex";
-        // shouldWeDeleteIt.style.display = 'flex';
-  
-        // console.log(newSoundName);
-        // soundToDelete.checked = true;
       };
   
       // let clickstart = 1000;
@@ -658,7 +677,8 @@ window.addEventListener('load', () => {
     sounds,
     allSounds,
     audios,
-    storageRef
+    storageRef,
+    username
   ) {
     representSounds.textContent = "";
     for (let title of Object.keys(allFolders)) {
@@ -699,7 +719,8 @@ window.addEventListener('load', () => {
           divAfter,
           title,
           audios2,
-          storageRef
+          storageRef,
+          username
         );
         divAfter.style.display = "flex";
         loadSound.style.display = "none";
