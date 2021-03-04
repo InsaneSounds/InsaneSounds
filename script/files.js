@@ -453,7 +453,7 @@ window.addEventListener('load', () => {
       newSound.style.backgroundColor = color;
       newSound.style.border = `2px solid ${color}`;
       newSoundName.textContent = splittedTitle;
-      newSound.dataset["audio"] = soundTitle;
+      newSoundName.dataset["audio"] = soundTitle;
   
       // console.log(newSoundName);
       newSound.appendChild(soundToDelete);
