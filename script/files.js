@@ -33,6 +33,8 @@ window.addEventListener('load', () => {
         document.getElementById('signOut').style.display = 'flex';
         document.getElementById('userIcon').style.display = 'none';
         document.getElementById('ifSignIn').textContent = '';
+        document.getElementById('uploadWrapper').style.pointerEvents = 'none';
+        document.getElementById('ifSignInUpload').textContent = 'Aus Sicherheitsgründen dürfen nur berechtigte Sounds hochladen.'
         
   
         const storage = firebase.storage();
@@ -203,7 +205,8 @@ window.addEventListener('load', () => {
               uploadImageAsPromise(fragmente, choosedFolder.value);
             }
           } else {
-            document.getElementById('ifSignInUpload').textContent = 'Sie sind nicht zu dieser Funktion berechtigt.'
+            // document.getElementById('uploadWrapper').style.pointerEvents = 'none';
+            // document.getElementById('ifSignInUpload').textContent = 'Aus Sicherheitsgründen dürfen nur berechtigte Sounds hochladen.'
           }
           
           //  else
@@ -323,7 +326,7 @@ window.addEventListener('load', () => {
         document.getElementById('signOut').style.display = 'none';
         document.getElementById('userIcon').style.display = 'flex';
         document.getElementById('ifSignIn').textContent = 'Bitte Melden Sie sich an!';
-        document.getElementById('ifSignInUpload').textContent ='Bitte Melden Sie sich an!!!!';
+        document.getElementById('ifSignInUpload').textContent ='Bitte Melden Sie sich an!';
         document.getElementById('uploadWrapper').style.pointerEvents = 'none';
         document.getElementById('makeFullScreen').style.display = 'none';
         document.getElementById('normalScreen').style.display = 'none';

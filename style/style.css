@@ -116,6 +116,14 @@ h1 {
 
 }
 
+.continueWithEmail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  width: 70vw;
+}
+
 i {
   /* color: #2448e4; */
   /* background-color: #2448e4; */
