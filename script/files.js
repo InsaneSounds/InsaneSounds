@@ -134,6 +134,32 @@ window.addEventListener('load', () => {
   
           // // });
           // if (isValid)
+          // const toDeleteSounds = document.getElementsByClassName(
+          //   "checkboxToDelete"
+          // );
+          // // const soundsToDeleteFeedback = document.getElementById(
+          // //   "soundsToDeleteFeedback"
+          // // );
+          // let thisSoundsToDelete = [];
+          // for (let i = 0; i < toDeleteSounds.length; i++) {
+          //   console.log(toDeleteSounds[i].checked === true);
+          //   if (toDeleteSounds[i].checked === true) {
+          //     thisSoundsToDelete.push(toDeleteSounds[i]);
+          //   }
+          // }
+          // // toDeleteSounds.forEach(element => {
+          // if (thisSoundsToDelete.length === 0) {
+          //   // soundsToDeleteFeedback.textContent =
+          //   //   "Sie müssen einen Sound auswählen um ihn zu Löschen";
+          // } else {
+          //   // document.getElementById("showDeleteBox").style.opacity = 1;
+          //   // document.getElementById("showDeleteBox").style.zIndex = 1;
+          //   // document.getElementById("showDeleteBox").style.pointerEvents =
+          //   //   "auto";
+          //   // document.getElementById("showDeleteBox").style.display = "flex";
+          //   // document.getElementById('chooseFolderBox'). = 'flex';
+          //   // document.getElementById('newFolderNameFeedback').textContent = '';
+          // }
           playSound(audios, event);
         });
   
@@ -344,6 +370,7 @@ window.addEventListener('load', () => {
     // existingFolders.appendChild(select);
     for (let title of Object.keys(allFolders)) {
       let option = document.createElement("p");
+      option.setAttribute('class', 'folderToChoose')
       // newSound.setAttribute("class", "soundsToPlay");
       // const color = getRandomColor();
       // newSound.style.backgroundColor = color;
@@ -428,20 +455,31 @@ window.addEventListener('load', () => {
   
     let soundToDeleteBox = document.createElement("div");
     let popUpBoxToConfirm = document.createElement("div");
+    let labelText = document.createElement('p');
+    let buttonDiv = document.createElement('div');
     let buttonConfirm = document.createElement("button");
     let buttonCancel = document.createElement("button");
   
     soundToDeleteBox.setAttribute("class", "showBox");
     soundToDeleteBox.setAttribute("id", "showDeleteBox");
     popUpBoxToConfirm.setAttribute("class", "showPopUpBox");
+    popUpBoxToConfirm.setAttribute("id", "popUpBoxToDelete");
     buttonConfirm.setAttribute("class", "btnWrapper");
     buttonCancel.setAttribute("class", "btnWrapper");
-  
-    buttonConfirm.textContent = "Löschen";
+    buttonConfirm.setAttribute("id", "confirmButton");
+    buttonCancel.setAttribute("id", "cancelButton");
+    // labelText.setAttribute('for', 'labelText')
+    buttonDiv.setAttribute('id', 'buttonDiv');
+
+    labelText.textContent = 'Gelöschte Dateien können nicht wiederhergestellt werden';
+    
+    buttonConfirm.textContent = "Bestätigen";
     buttonCancel.textContent = "Abrechen";
   
-    popUpBoxToConfirm.appendChild(buttonConfirm);
-    popUpBoxToConfirm.appendChild(buttonCancel);
+    popUpBoxToConfirm.appendChild(labelText);
+    buttonDiv.appendChild(buttonConfirm);
+    buttonDiv.appendChild(buttonCancel);
+    popUpBoxToConfirm.appendChild(buttonDiv)
     soundToDeleteBox.appendChild(popUpBoxToConfirm);
     soundboardWrapper.appendChild(soundToDeleteBox);
   
@@ -460,14 +498,16 @@ window.addEventListener('load', () => {
       soundToDelete.setAttribute("name", soundTitle);
       soundToDelete.setAttribute("id", soundTitle);
       soundToDelete.setAttribute("class", "checkboxToDelete");
+      newSoundName.style.cursor = 'pointer';
       // newSoundName.style.zIndex = "1";
       // newSound.style.zIndex = "99";
       soundToDelete.style.display = "none";
       const color = getRandomColor();
       newSound.style.backgroundColor = color;
       newSound.style.border = `2px solid ${color}`;
-      newSound.textContent = splittedTitle;
+      newSoundName.textContent = splittedTitle;
       newSound.dataset["audio"] = soundTitle;
+      newSoundName.dataset["audio"] = soundTitle;
   
       // console.log(newSoundName);
       newSound.appendChild(soundToDelete);
@@ -553,7 +593,7 @@ window.addEventListener('load', () => {
           timer = null;
         }
       }
-      onlongtouch = function () {
+      onlongtouch = function (event) {
         timer = null;
         // soundToDelete
         // document.getElementById('ping').innerText+='ping\n';
@@ -561,7 +601,32 @@ window.addEventListener('load', () => {
   
         // soundToDelete.checked = true
         // console.log(username);
+        console.log(event);
         if (username === 'sGInxamkNwd0WrnJ7S08aOkg5nq2') {
+          // let audiotoStop = document.getElementsByClassName('soundsToPlay');
+          // console.log(audiotoStop);
+          // audiotoStop.forEach(element => {
+          //   element.pause();
+          //   element.currentTime = 0
+          // });
+          // let audio = audios[representSounds.target.dataset["audio"]];
+          // if (audio) {
+          //   for (let audio of Object.values(audios)) {
+          //     audio.pause();
+          //     audio.currentTime = 0;
+          //   }
+          //   // audio.play();
+      
+          //   // navigator.vibrate =
+          //   //   navigator.vibrate ||
+          //   //   navigator.webkitVibrate ||
+          //   //   navigator.mozVibrate ||
+          //   //   navigator.msVibrate;
+          //   // if (navigator.vibrate) {
+          //   //   navigator.vibrate([50]);
+          //   // }
+          // }
+
           const goToDeleteBtn = document.getElementsByClassName("checkboxToDelete");
           // getElementsByTagName('input');
           // console.log(goToDeleteBtn);
@@ -790,7 +855,8 @@ window.addEventListener('load', () => {
       //   isValid = true;
       // }
     }
-  
+    // console.log(event);
+
     if (isValid) {
       let audio = audios[event.target.dataset["audio"]];
       if (audio) {

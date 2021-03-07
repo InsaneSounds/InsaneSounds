@@ -24,6 +24,8 @@ h1 {
 .showBox {
   display: none;
   position: fixed;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(231, 236, 243, 0.75);
   top: 0;
   right: 0;
@@ -58,13 +60,36 @@ h1 {
   display: none;
 }
 .showBox .showPopUpBox {
-  width: 400px;
+  display: flex;
+  width: 80vw;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  /* width: 400px; */
   position: relative;
-  margin: 10% auto;
-  padding: 2rem;
+  /* margin: 10% auto; */
+  padding: 1rem;
   background: #fff;
-  color: #444;
+  /* color: #444; */
   z-index: 1;
+}
+
+#closePopUpBox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  right: 0;
+  font-size: 1.3em;
+  margin: 0 0 1.5vh 0;
+  /* justify-content: right;
+  align-items: flex-end; */
+}
+
+.folderToChoose {
+  border-bottom: 2px solid #2448e4;
+  padding: 0 0 1vh 0;
+  /* min-width: 10%; */
+  min-width: 60vw;
 }
 #soundboardWrapper {
   display: flex;
@@ -74,6 +99,21 @@ h1 {
   align-items: center;
   flex-wrap: wrap;
   flex-direction: column;
+}
+
+#confirmButton, #cancelButton {
+  display: flex;
+  /* font-size: 0.5em; */
+  margin: 0;
+  padding: 5px;
+}
+
+#buttonDiv {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+
 }
 
 i {
@@ -121,7 +161,7 @@ input[type=text], input[type=password] {
   height: 4vh; */
   font-size: 16px;
   margin: 10px 0;
-  padding: 5px;
+  /* padding: 5px; */
 
   
   transition: border-bottom 500ms ease;
