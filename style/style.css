@@ -45,16 +45,15 @@ h1 {
   pointer-events: auto;
 }
 
-#ifSignIn {
+/* #ifSignIn {
   color: #db3232;
   font-size: 1.05em;
-  /* font-weight: bold; */
 }
 
 #ifSignInUpload {
   color: #db3232;
   font-size: 1.05em;
-}
+} */
 
 #normalScreen {
   display: none;
@@ -142,6 +141,11 @@ i {
     width: 100vw;
 } */
 
+.feedback {
+  color: #db3232;
+  font-size: 1.05em;
+}
+
 #signInWrapper {
   width: 100vw;
   height: 91vh;
@@ -220,11 +224,7 @@ input[type=text]:focus, input[type=password]:focus {
   border-radius: 5px;
 }
 
-#goToSignUp {
-  color: #2448e4;
-}
-
-#goToSignIn {
+.linkTo {
   color: #2448e4;
 }
 

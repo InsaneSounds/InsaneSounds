@@ -33,8 +33,11 @@ window.addEventListener('load', () => {
         document.getElementById('signOut').style.display = 'flex';
         document.getElementById('userIcon').style.display = 'none';
         document.getElementById('ifSignIn').textContent = '';
-        document.getElementById('uploadWrapper').style.pointerEvents = 'none';
-        document.getElementById('ifSignInUpload').textContent = 'Aus Sicherheitsgründen dürfen nur berechtigte Sounds hochladen.'
+        if (user.uid != 'sGInxamkNwd0WrnJ7S08aOkg5nq2') {
+          document.getElementById('uploadWrapper').style.pointerEvents = 'none';
+          document.getElementById('ifSignInUpload').textContent = 'Aus Sicherheitsgründen dürfen nur berechtigte Sounds hochladen.';
+        }
+        
         
   
         const storage = firebase.storage();
@@ -604,7 +607,7 @@ window.addEventListener('load', () => {
   
         // soundToDelete.checked = true
         // console.log(username);
-        console.log(event);
+        // console.log(event);
         if (username === 'sGInxamkNwd0WrnJ7S08aOkg5nq2') {
           // let audiotoStop = document.getElementsByClassName('soundsToPlay');
           // console.log(audiotoStop);

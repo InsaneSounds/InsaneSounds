@@ -68,12 +68,12 @@
       <h1 id="soundboardHeadline">Insane Sounds</h1>
       <i class="fas fa-expand-alt" id="makeFullScreen"></i>
       <i class="fas fa-compress-alt" id="normalScreen"></i>
-      <p id="ifSignIn"></p>
+      <p id="ifSignIn" class="feedback"></p>
       <!-- <h2 id="loadSounds">Load Sounds</h2> -->
       <div id="representSounds"></div>
       <!-- <div id="deleteField"></div> -->
       <button class="btnWrapper" id="confirmDeleteFirst">Löschen</button>
-      <p id="soundsToDeleteFeedback"></p>
+      <p id="soundsToDeleteFeedback" class="feedback"></p>
     </section>
     
     
@@ -81,16 +81,16 @@
       <h1>Upload Sounds</h1>
       <!-- <div> -->
         <input type="file" id="files" accept="audio/*" multiple>
-        <p id="fileFeedback"></p>
+        <p id="fileFeedback" class="feedback"></p>
         <!-- <div id="choseFolder"> -->
           <!-- <div id="existingFolder">
           </div> -->
         <input type="text" readonly id="choosedFolder" placeholder="Ordner auswählen">
-        <p id="folderNameFeedback"></p>
+        <p id="folderNameFeedback" class="feedback"></p>
         
         <!-- </div> -->
         <button class="btnWrapper" id="uploadFiles">Upload Files</button>
-        <p id="ifSignInUpload"></p>
+        <p id="ifSignInUpload" class="feedback"></p>
       <!-- </div> -->
 
       <div id="chooseFolderBox" class="showBox">
@@ -99,7 +99,7 @@
           <label for="folderName">Wählen oder geben Sie einen neuen Ordner Namen ein</label>
           <div id="existingFolders"></div>
           <input type="text" name="newFolderName" id="newFolderName">
-          <p id="newFolderNameFeedback"></p>
+          <p id="newFolderNameFeedback" class="feedback"></p>
           <button class="btnWrapper" id="choseNewFolder">Auswählen</button>
         </div>
       </div>
@@ -113,16 +113,16 @@
 
       <div class="continueWithEmail">
         <input type="text" placeholder="E-Mail Adresse" id="emailUp">
-        <p id="emUpFeedback"></p>
+        <p id="emUpFeedback" class="feedback"></p>
         <input type="password" placeholder="Passwort" id="passwordUp">
-        <p id="pwUpFeedback"></p>
+        <p id="pwUpFeedback" class="feedback"></p>
       </div>
       <button class="btnWrapper" id="signUpBtn">Registrieren</button>
 
       <button class="btnWrapper" id="googleSignUpBtn">Weiter mit Google</button>
 
       <div class="goToOther">
-        <p id="goToSignIn">bereits registriert? Anmelden!</p>
+        <p id="goToSignIn" class="linkTo">bereits registriert? Anmelden!</p>
       </div>
     </section>
 
@@ -130,9 +130,9 @@
       <h1>Anmelden</h1>
       <div class="continueWithEmail">
         <input type="text" placeholder="E-Mail Adresse" id="emailIn">
-        <p id="emInFeedback"></p>
+        <p id="emInFeedback" class="feedback"></p>
         <input type="password" placeholder="Passwort" id="passwordIn">
-        <p id="pwInFeedback"></p>
+        <p id="pwInFeedback" class="feedback"></p>
       </div>
       <button class="btnWrapper" id="signInBtn">Anmelden</button>
 
@@ -140,7 +140,7 @@
 
       <div class="goToOther">
         <!-- <p id="passwordForgot">Passwort vergessen?</p> -->
-        <p id="goToSignUp">kein Account? Registrieren!</p>
+        <p id="goToSignUp" class="linkTo">kein Account? Registrieren!</p>
       </div>
     </section>
     
