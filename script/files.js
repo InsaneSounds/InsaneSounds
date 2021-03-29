@@ -480,7 +480,7 @@ window.addEventListener('load', () => {
     labelText.textContent = 'Gelöschte Dateien können nicht wiederhergestellt werden';
     
     buttonConfirm.textContent = "Bestätigen";
-    buttonCancel.textContent = "Abrechen";
+    buttonCancel.textContent = "Abbrechen";
   
     popUpBoxToConfirm.appendChild(labelText);
     buttonDiv.appendChild(buttonConfirm);

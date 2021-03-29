@@ -124,6 +124,7 @@ h1 {
 }
 
 i {
+  cursor: pointer;
   /* color: #2448e4; */
   /* background-color: #2448e4; */
 }
