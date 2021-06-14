@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
     //   document.getElementById('makeFullScreen').style.display = 'none';
     //   document.getElementById('normalScreen').style.display = 'none';
     // }
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         // const uid = user.uid;
         // console.log(uid);
@@ -47,7 +47,7 @@ window.addEventListener('load', () => {
         let representSounds = document.getElementById("representSounds");
         const uploadFiles = document.getElementById("uploadFiles");
         const existingFolders = document.getElementById("existingFolders");
-        
+         
         let allFolders = {};
         let nameOfStorage = {};
         let storageReference = storage.ref();
@@ -75,7 +75,7 @@ window.addEventListener('load', () => {
           );
           selectFolder(existingFolders, allFolders);
           // console.log(sounds.length);
-        }).catch((error) => {
+          }).catch((error) => {
           // console.log(error);
           document.getElementById('ifSignIn').textContent = 'Wir haben gerade einen Fehler bitte versuchen sie es später nocheinmal!';
         });
